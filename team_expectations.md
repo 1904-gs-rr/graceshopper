@@ -21,3 +21,5 @@ Team Expectations:
 Issues
 - voting process for any splits: basic majority wins
 - fellow decides ties
+
+Dan Tracy: dbtracy
