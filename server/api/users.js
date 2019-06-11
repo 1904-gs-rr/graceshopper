@@ -4,9 +4,9 @@ module.exports = router
 
 /*GET SINGLE USER BY ID*/
 
-router.get('/login/:id', async (req, res, next) => {
+router.get('/:id', async (req, res, next) => {
   try {
-    const {data} = await User.findOne({
+    const user = await User.findOne({
       where: {
         id: req.params.id
       },
@@ -14,7 +14,7 @@ router.get('/login/:id', async (req, res, next) => {
         {
           model: product_cart,
           where: {
-            userId: req.params.id
+            cartId: user.cartId
           }
         }
       ]
@@ -22,7 +22,7 @@ router.get('/login/:id', async (req, res, next) => {
     if (!user) {
       res.status(404).send()
     } else {
-      res.json(data)
+      res.json(user)
     }
   } catch (error) {
     next(error)
