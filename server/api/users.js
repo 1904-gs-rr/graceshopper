@@ -4,9 +4,21 @@ module.exports = router
 
 /*GET SINGLE USER BY ID*/
 
-router.get('/:id', async (req, res, next) => {
+router.get('/login/:id', async (req, res, next) => {
   try {
-    const {data} = await User.findById(req.params.id)
+    const {data} = await User.findOne({
+      where: {
+        id: req.params.id
+      },
+      include: [
+        {
+          model: product_cart,
+          where: {
+            userId: req.params.id
+          }
+        }
+      ]
+    })
     if (!user) {
       res.status(404).send()
     } else {
@@ -19,7 +31,7 @@ router.get('/:id', async (req, res, next) => {
 
 /**CREATE USER**/
 
-router.post('/', async (req, res, next) => {
+router.post('/newuser', async (req, res, next) => {
   try {
     firstName = req.body.firstName
     lastName = req.body.lastName
