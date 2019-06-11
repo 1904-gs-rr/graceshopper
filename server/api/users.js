@@ -16,3 +16,23 @@ router.get('/:id', async (req, res, next) => {
     next(error)
   }
 })
+
+/**CREATE USER**/
+
+router.post('/', async (req, res, next) => {
+  try {
+    firstName = req.body.firstName
+    lastName = req.body.lastName
+    email = req.body.email
+    password = req.body.password
+    const createUser = await User.create({
+      firstName,
+      lastName,
+      email,
+      password
+    })
+    res.status(200).send('User created!')
+  } catch (error) {
+    next(error)
+  }
+})
