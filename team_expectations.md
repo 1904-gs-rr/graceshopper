@@ -27,4 +27,8 @@ Issues
 * fellow decides ties
 
 Dan Tracy: dbtracy
+daniel wasserman: wassermandh
 Jorge Acosta: jorgeacostadlp
+
+daniel wasserman 2
+wilson
