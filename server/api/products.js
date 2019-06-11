@@ -1,4 +1,6 @@
 const router = require('express').Router()
+const Product = require('../db/models/product')
+
 module.exports = router
 
 /**GET ALL PRODUCTS**/
@@ -22,7 +24,3 @@ router.get('/:id', async (req, res, next) => {
     next(error)
   }
 })
-
-/**ADD PRODUCT TO CART**/
-
-router.put('/')
