@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const {User, Cart} = require('../db/models/')
+const {User, Cart, Product} = require('../db/models/')
 module.exports = router
 
 router.get('/', async (req, res, next) => {
@@ -10,6 +10,17 @@ router.get('/', async (req, res, next) => {
       res.json(products)
     }
     // else res.json('local storage cart')
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.put('/', async (req, res, next) => {
+  try {
+    const cart = await Cart.findByPk(req.session.cartId)
+    const item = await Product.findByPk(req.body.id)
+    await cart.addProduct(item)
+    res.send('success!')
   } catch (err) {
     next(err)
   }
