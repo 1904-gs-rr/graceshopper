@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const {User} = require('../db/models/')
+const {User, Cart} = require('../db/models/')
 module.exports = router
 
 /*GET SINGLE USER BY ID*/
@@ -22,15 +22,7 @@ router.get('/:id', async (req, res, next) => {
     const user = await User.findOne({
       where: {
         id: req.params.id
-      },
-      include: [
-        {
-          model: product_cart,
-          where: {
-            cartId: user.cartId
-          }
-        }
-      ]
+      }
     })
     if (!user) {
       res.status(404).send()
@@ -56,6 +48,9 @@ router.post('/newuser', async (req, res, next) => {
       email,
       password
     })
+    const cart = await Cart.create({})
+    await createUser.setCart(cart)
+    console.log(cart)
     res.status(200).send('User created!')
   } catch (error) {
     next(error)

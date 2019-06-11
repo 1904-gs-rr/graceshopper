@@ -34,7 +34,7 @@ async function seed() {
   ])
   const cart = await Cart.create({})
   const cart2 = await Cart.create({})
-  await users[0].setCart(cart)
+  // await users[0].setCart(cart)
   await cart.setProducts(products)
   await users[1].setCart(cart2)
   console.log(`seeded ${users.length} users`)
