@@ -8,6 +8,8 @@ router.get('/', async (req, res, next) => {
       const cart = await Order.findByPk(req.session.cartId)
       const products = await cart.getProducts()
       res.json(products)
+    } else {
+      res.json([])
     }
     // else res.json('local storage cart')
   } catch (err) {
