@@ -5,7 +5,7 @@ const GOT_CART = 'GOT_CART'
 const ADD_ITEM = 'ADD_ITEM'
 const GUEST_ADD = 'GUEST_ADD'
 
-const defaultCart = {}
+const defaultCart = []
 
 const gotCart = cart => ({type: GOT_CART, cart})
 const addItem = item => ({type: ADD_ITEM, item})

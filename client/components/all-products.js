@@ -16,21 +16,19 @@ class AllProducts extends React.Component {
     if (!this.props.user.id) {
       if (localStorage.getItem('cart')) {
         let cart = JSON.parse(localStorage.getItem('cart'))
-        if (!cart[event.target.id]) {
-          cart[event.target.id] = 1
-        } else {
-          cart[event.target.id] = cart[event.target.id] + 1
-        }
+
+        cart.push(event)
         cart = JSON.stringify(cart)
         localStorage.setItem('cart', cart)
       } else {
-        let cart = {}
-        cart[event.target.id] = 1
+        let cart = []
+        cart.push(event)
         cart = JSON.stringify(cart)
         localStorage.setItem('cart', cart)
       }
     }
     let parsedCart = JSON.parse(localStorage.getItem('cart'))
+    console.log(parsedCart)
     this.props.guestAdd(parsedCart)
   }
   render() {
@@ -46,7 +44,7 @@ class AllProducts extends React.Component {
               <img src={product.imageUrl} />
               <p>Quantity: {product.quantity}</p>
               <p>Price: $ {product.price}</p>
-              <button id={product.id} onClick={this.addToCart}>
+              <button onClick={() => this.addToCart(product)}>
                 Add to cart
               </button>
             </div>
