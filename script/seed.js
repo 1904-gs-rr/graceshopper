@@ -1,9 +1,8 @@
 'use strict'
 
 const db = require('../server/db')
-const {User} = require('../server/db/models')
-const {Product} = require('../server/db/models')
-const {Cart} = require('../server/db/models')
+const {User, Product, Order} = require('../server/db/models')
+
 async function seed() {
   await db.sync({force: true})
   console.log('db synced!')
@@ -18,28 +17,28 @@ async function seed() {
       imageUrl:
         'https://cdn.shopify.com/s/files/1/0770/4637/products/black_main_large.jpg?v=1454511927',
       quantity: 10,
-      price: 15.0
+      price: 1500
     }),
     Product.create({
       name: 'Plates',
       imageUrl:
         'https://media.istockphoto.com/photos/simple-circular-porcelain-plate-isolated-on-whit-picture-id860188194?k=6&m=860188194&s=612x612&w=0&h=S101EorVtE1kwwms-d-_yXboTNwtdqCFb8meV8_Lxu0=',
       quantity: 8,
-      price: 12.5
+      price: 1200
     }),
     Product.create({
       name: 'Forks',
       imageUrl:
         'https://media.gettyimages.com/photos/dishware-picture-id598721906?s=2048x2048',
       quantity: 5,
-      price: 4.0
+      price: 400
     })
   ])
-  const cart = await Cart.create({})
-  const cart2 = await Cart.create({})
-  // await users[0].setCart(cart)
-  await cart.setProducts(products)
-  await users[1].setCart(cart2)
+  const order = await Order.create({})
+  const order2 = await Order.create({})
+  await users[0].addOrder(order)
+  await order.setProducts(products)
+  await users[1].addOrder(order2)
   console.log(`seeded ${users.length} users`)
   console.log(`seeded successfully`)
 }

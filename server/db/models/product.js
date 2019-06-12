@@ -17,7 +17,7 @@ const Product = db.define('product', {
     defaultValue: 0
   },
   price: {
-    type: Sequelize.REAL
+    type: Sequelize.INTEGER
   }
 })
 
