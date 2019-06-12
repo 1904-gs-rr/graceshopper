@@ -22,6 +22,7 @@ class AllProducts extends React.Component {
               </NavLink>
               <img src={product.imageUrl} />
               <p>Quantity: {product.quantity}</p>
+              <p>Price: $ {product.price}</p>
               <button>Add to cart</button>
             </div>
           )

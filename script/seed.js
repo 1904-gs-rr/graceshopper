@@ -17,19 +17,22 @@ async function seed() {
       name: 'Cups',
       imageUrl:
         'https://cdn.shopify.com/s/files/1/0770/4637/products/black_main_large.jpg?v=1454511927',
-      quantity: 10
+      quantity: 10,
+      price: 15.0
     }),
     Product.create({
       name: 'Plates',
       imageUrl:
         'https://media.istockphoto.com/photos/simple-circular-porcelain-plate-isolated-on-whit-picture-id860188194?k=6&m=860188194&s=612x612&w=0&h=S101EorVtE1kwwms-d-_yXboTNwtdqCFb8meV8_Lxu0=',
-      quantity: 8
+      quantity: 8,
+      price: 12.5
     }),
     Product.create({
       name: 'Forks',
       imageUrl:
         'https://media.gettyimages.com/photos/dishware-picture-id598721906?s=2048x2048',
-      quantity: 5
+      quantity: 5,
+      price: 4.0
     })
   ])
   const cart = await Cart.create({})
