@@ -3,11 +3,13 @@ import history from '../history'
 
 const GOT_CART = 'GOT_CART'
 const ADD_ITEM = 'ADD_ITEM'
+const GUEST_ADD = 'GUEST_ADD'
 
-const defaultCart = []
+const defaultCart = {}
 
 const gotCart = cart => ({type: GOT_CART, cart})
 const addItem = item => ({type: ADD_ITEM, item})
+export const guestAdd = cart => ({type: GUEST_ADD, cart})
 
 export const getCart = () => {
   return async dispatch => {
@@ -37,6 +39,8 @@ export default function(state = defaultCart, action) {
       return action.cart
     case ADD_ITEM:
       return [...state, action.item]
+    case GUEST_ADD:
+      return action.cart
     default:
       return state
   }

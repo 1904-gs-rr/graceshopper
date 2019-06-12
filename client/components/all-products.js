@@ -2,13 +2,36 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {getProducts} from '../store/products'
 import {NavLink} from 'react-router-dom'
+import {guestAdd} from '../store/cart'
 
 class AllProducts extends React.Component {
   constructor() {
     super()
+    this.addToCart = this.addToCart.bind(this)
   }
   componentDidMount() {
     this.props.getProducts()
+  }
+  addToCart(event) {
+    if (!this.props.user.id) {
+      if (localStorage.getItem('cart')) {
+        let cart = JSON.parse(localStorage.getItem('cart'))
+        if (!cart[event.target.id]) {
+          cart[event.target.id] = 1
+        } else {
+          cart[event.target.id] = cart[event.target.id] + 1
+        }
+        cart = JSON.stringify(cart)
+        localStorage.setItem('cart', cart)
+      } else {
+        let cart = {}
+        cart[event.target.id] = 1
+        cart = JSON.stringify(cart)
+        localStorage.setItem('cart', cart)
+      }
+    }
+    let parsedCart = JSON.parse(localStorage.getItem('cart'))
+    this.props.guestAdd(parsedCart)
   }
   render() {
     return (
@@ -23,7 +46,9 @@ class AllProducts extends React.Component {
               <img src={product.imageUrl} />
               <p>Quantity: {product.quantity}</p>
               <p>Price: $ {product.price}</p>
-              <button>Add to cart</button>
+              <button id={product.id} onClick={this.addToCart}>
+                Add to cart
+              </button>
             </div>
           )
         })}
@@ -34,7 +59,8 @@ class AllProducts extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    products: state.products
+    products: state.products,
+    user: state.user
   }
 }
 
@@ -42,6 +68,9 @@ const mapDispatchToProps = dispatch => {
   return {
     getProducts: () => {
       return dispatch(getProducts())
+    },
+    guestAdd: cart => {
+      return dispatch(guestAdd(cart))
     }
   }
 }
