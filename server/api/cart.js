@@ -5,6 +5,7 @@ module.exports = router
 router.get('/', async (req, res, next) => {
   try {
     if (req.session.cartId) {
+      console.log(req.session.cartId)
       const cart = await Cart.findByPk(req.session.cartId)
       const products = await cart.getProducts()
       res.json(products)
