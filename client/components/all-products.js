@@ -2,7 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {getProducts} from '../store/products'
 import {NavLink} from 'react-router-dom'
-import {guestAdd} from '../store/cart'
+import {guestAdd, addingItem} from '../store/cart'
 
 class AllProducts extends React.Component {
   constructor() {
@@ -44,7 +44,13 @@ class AllProducts extends React.Component {
               <img src={product.imageUrl} />
               <p>Quantity: {product.quantity}</p>
               <p>Price: $ {product.price}</p>
-              <button onClick={() => this.addToCart(product)}>
+              <button
+                onClick={
+                  !this.props.user.id
+                    ? () => this.addToCart(product)
+                    : () => this.props.userAdd(product)
+                }
+              >
                 Add to cart
               </button>
             </div>
@@ -69,6 +75,9 @@ const mapDispatchToProps = dispatch => {
     },
     guestAdd: cart => {
       return dispatch(guestAdd(cart))
+    },
+    userAdd: item => {
+      return dispatch(addingItem(item))
     }
   }
 }
