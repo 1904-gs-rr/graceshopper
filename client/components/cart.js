@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {getCart} from '../store/cart'
+import {getCart, guestAdd} from '../store/cart'
 import {NavLink} from 'react-router-dom'
 
 class Cart extends React.Component {
@@ -8,7 +8,15 @@ class Cart extends React.Component {
     super()
   }
   componentDidMount() {
-    this.props.getCart()
+    if (this.props.user.id) {
+      this.props.getCart()
+    } else {
+      let cart = JSON.parse(localStorage.getItem('cart'))
+      if (cart === null) {
+        cart = []
+      }
+      this.props.guestAdd(cart)
+    }
   }
   render() {
     return (
@@ -19,6 +27,7 @@ class Cart extends React.Component {
             <div key={product.id}>
               <h3>{product.name}</h3>
               <img src={product.imageUrl} />
+              <h6>Quantity: </h6>
             </div>
           )
         })}
@@ -28,6 +37,7 @@ class Cart extends React.Component {
 }
 const mapStateToProps = state => {
   return {
+    user: state.user,
     cart: state.cart
   }
 }
@@ -36,6 +46,9 @@ const mapDispatchToProps = dispatch => {
   return {
     getCart: () => {
       return dispatch(getCart())
+    },
+    guestAdd: cart => {
+      return dispatch(guestAdd(cart))
     }
   }
 }
