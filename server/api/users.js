@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const {User, Cart} = require('../db/models/')
+const {User, Order} = require('../db/models/')
 module.exports = router
 
 /*GET SINGLE USER BY ID*/
@@ -38,18 +38,16 @@ router.get('/:id', async (req, res, next) => {
 
 router.post('/newuser', async (req, res, next) => {
   try {
-    firstName = req.body.firstName
-    lastName = req.body.lastName
-    email = req.body.email
-    password = req.body.password
+    const {firstName, lastName, email, password} = req.body
+
     const createUser = await User.create({
       firstName,
       lastName,
       email,
       password
     })
-    const cart = await Cart.create({})
-    await createUser.setCart(cart)
+    const cart = await Order.create({})
+    await createUser.addOrder(cart)
     console.log(cart)
     res.status(200).send('User created!')
   } catch (error) {
