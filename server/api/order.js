@@ -18,7 +18,9 @@ router.get('/', async (req, res, next) => {
 router.put('/', async (req, res, next) => {
   try {
     console.log(req.session)
+    console.log('BODY:', req.body)
     const cart = await Order.findByPk(req.session.cartId)
+    console.log(cart)
     const item = await Product.findByPk(req.body.id)
     await cart.addProduct(item)
     res.send('success!')
