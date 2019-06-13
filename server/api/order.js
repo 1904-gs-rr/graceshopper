@@ -45,6 +45,7 @@ router.put('/', async (req, res, next) => {
     const productFromCart = await CartProduct.findOrCreate({
       where: {orderId: req.session.cartId, productId: req.body.item.id}
     })
+
     console.log(productFromCart[0])
     // if (productFromCart) {
     await productFromCart[0].update({
@@ -64,6 +65,7 @@ router.put('/', async (req, res, next) => {
     // })
     // res.send('success!')
     // }
+
   } catch (err) {
     next(err)
   }
