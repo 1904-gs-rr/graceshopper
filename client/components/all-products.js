@@ -16,19 +16,33 @@ class AllProducts extends React.Component {
     if (!this.props.user.id) {
       if (localStorage.getItem('cart')) {
         let cart = JSON.parse(localStorage.getItem('cart'))
-
-        cart.push(event)
+        let found = false
+        // check if it exists
+        // let stringifiedEvent = JSON.stringify(event)
+        for (let i = 0; i < cart.length; i++) {
+          if (cart[i].id === event.id) {
+            // if item is in cart
+            cart[i].cartQuantity = cart[i].cartQuantity + 1
+            found = true
+          }
+        }
+        if (!found) {
+          event.cartQuantity = 1
+          cart.push(event)
+        }
+        found = false
+        // if (cart.includes(stringifiedEvent)) cart.push(event)
         cart = JSON.stringify(cart)
         localStorage.setItem('cart', cart)
       } else {
         let cart = []
+        event.cartQuantity = 1
         cart.push(event)
         cart = JSON.stringify(cart)
         localStorage.setItem('cart', cart)
       }
     }
     let parsedCart = JSON.parse(localStorage.getItem('cart'))
-    console.log(parsedCart)
     this.props.guestAdd(parsedCart)
   }
   render() {

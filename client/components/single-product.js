@@ -19,7 +19,6 @@ class SingleProduct extends React.Component {
   addToCart(event) {
     if (!this.props.user.id) {
       if (localStorage.getItem('cart')) {
-        console.dir(localStorage.getItem('cart'))
         let cart = JSON.parse(localStorage.getItem('cart'))
         let found = false
         // check if it exists
@@ -48,7 +47,6 @@ class SingleProduct extends React.Component {
       }
     }
     let parsedCart = JSON.parse(localStorage.getItem('cart'))
-    console.log(parsedCart)
     this.props.guestAdd(parsedCart)
   }
   render() {
