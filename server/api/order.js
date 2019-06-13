@@ -41,7 +41,6 @@ router.put('/', async (req, res, next) => {
     } else {
       const cart = await Order.findByPk(req.session.cartId)
       const item = await Product.findByPk(req.body.id)
-
       await cart.addProduct(item)
       res.send('success!')
     }

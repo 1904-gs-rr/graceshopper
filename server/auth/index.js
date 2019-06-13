@@ -19,7 +19,7 @@ router.post('/login', async (req, res, next) => {
         }
       })
       req.session.cartId = cart.id
-      console.log('CART ID:', cart.id)
+      req.session.userId = user.id
       req.login(user, err => (err ? next(err) : res.json(user)))
     }
   } catch (err) {
