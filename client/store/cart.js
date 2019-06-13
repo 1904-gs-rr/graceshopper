@@ -22,10 +22,10 @@ export const getCart = () => {
   }
 }
 
-export const addingItem = item => {
+export const addingItem = (item, quantity) => {
   return async dispatch => {
     try {
-      await axios.put(`/api/cart/`, item)
+      await axios.put(`/api/cart/`, {item, quantity})
       dispatch(addItem(item))
     } catch (err) {
       console.error(err)

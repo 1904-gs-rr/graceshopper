@@ -51,17 +51,27 @@ class SingleProduct extends React.Component {
   }
   render() {
     const product = this.state.product
+    let options = []
+    for (let i = 0; i <= product.quantity; i++) {
+      options.push(
+        <option key={i} value={i}>
+          {i}
+        </option>
+      )
+    }
     return (
       <div>
         <h1>{product.name}</h1>
         <img src={product.imageUrl} />
         <h2>Quantity: {product.quantity}</h2>
+        <select ref="productQuantity">{options}</select>
         <button
           type="button"
           onClick={
             !this.props.user.id
               ? () => this.addToCart(product)
-              : () => this.props.userAdd(product)
+              : () =>
+                  this.props.userAdd(product, this.refs.productQuantity.value)
           }
         >
           Add to cart
@@ -83,8 +93,8 @@ const mapDispatchToProps = dispatch => {
     guestAdd: cart => {
       return dispatch(guestAdd(cart))
     },
-    userAdd: item => {
-      return dispatch(addingItem(item))
+    userAdd: (item, quantity) => {
+      return dispatch(addingItem(item, quantity))
     }
   }
 }
