@@ -27,7 +27,7 @@ class Cart extends React.Component {
             <div key={product.id}>
               <h3>{product.name}</h3>
               <img src={product.imageUrl} />
-              <h6>Quantity: </h6>
+              <h3>Quantity: {product.cartQuantity} </h3>
             </div>
           )
         })}
@@ -41,7 +41,6 @@ const mapStateToProps = state => {
     cart: state.cart
   }
 }
-
 const mapDispatchToProps = dispatch => {
   return {
     getCart: () => {
