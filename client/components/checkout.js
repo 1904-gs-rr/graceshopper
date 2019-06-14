@@ -1,25 +1,21 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {getCart, guestAdd} from '../store/cart'
-import {NavLink, Redirect} from 'react-router-dom'
+import {getCart} from '../store/cart'
+import {NavLink} from 'react-router-dom'
+import Axios from 'axios'
 
-class Cart extends React.Component {
+class Checkout extends React.Component {
   constructor() {
     super()
   }
   componentDidMount() {
-    if (this.props.user.id) {
-      this.props.getCart()
-    } else {
-      let cart = JSON.parse(localStorage.getItem('cart'))
-      if (cart === null) {
-        cart = []
-      }
-      this.props.guestAdd(cart)
-    }
+    this.props.getCart()
   }
-
+  async submitOrder() {
+    await Axios.put('/api/checkout')
+  }
   render() {
+    console.log(this.props.cart)
     return (
       <div>
         <h1>Products in Cart:</h1>
@@ -32,25 +28,25 @@ class Cart extends React.Component {
             </div>
           )
         })}
-        <NavLink to="/checkout">To Checkout</NavLink>
+        <button onClick={this.submitOrder}>Submit Order</button>
       </div>
     )
   }
 }
+
 const mapStateToProps = state => {
   return {
     user: state.user,
     cart: state.cart
   }
 }
+
 const mapDispatchToProps = dispatch => {
   return {
     getCart: () => {
       return dispatch(getCart())
-    },
-    guestAdd: cart => {
-      return dispatch(guestAdd(cart))
     }
   }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(Cart)
+
+export default connect(mapStateToProps, mapDispatchToProps)(Checkout)
