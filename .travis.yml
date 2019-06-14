@@ -14,16 +14,16 @@ notifications:
 install:
   - npm ci # faster, goes only from package-lock
 before_script:
-  - psql -c 'create database "grace-shopper";' -U postgres # remember to change this name if you change it elsewhere (e.g. package.json)
+  - psql -c 'create database "grace-shopper-test";' -U postgres # remember to change this name if you change it elsewhere (e.g. package.json)
 script:
   - npm test # test the code
   - npm run build-client # make the bundle
 
-# before_deploy:
-#   - rm -rf node_modules # omit from the tarball, since we skip cleanup
-# deploy:
-#   skip_cleanup: true # prevents travis from deleting the build
-#   provider: heroku
-#   app: YOUR-HEROKU-APP-NAME-HERE # see README
-#   api_key:
-#     secure: YOUR-***ENCRYPTED***-API-KEY-HERE # see README
+before_deploy:
+  - rm -rf node_modules # omit from the tarball, since we skip cleanup
+deploy:
+  skip_cleanup: true # prevents travis from deleting the build
+  provider: heroku
+  app: graceshopper-righteousrodents # see README
+  api_key:
+    secure: Tq0pN2S3YcG7/hW025TzcGIMgO1xIwAfzTwpkPDq0wyLu2T7ydzIw6viBnPRDebUycE90liJyJ3DqLfSt438+4a3CCewW9bwXGA+obLqk3iR4KMJaMEHzS10oRBaxHq40dfW/02mfhzpH8Gluw/hJB0efMEiJuJbUpeVCETGoAh3GH6OZ6Jlax4lVnz2a4hdUZ4OHEQVxHBoALTN2qQcrdJ0KFMFbu5bEmxhwIcEY7EwuEuUKWyBCgVuKzVFbFw3kbBXeNCHqKzo6LGZuIHzRXliSrBZW+N1C0FDPiTJO+1bvdhF6+Fqxrqnhi4gqs7v3eVM7OFmZAMZx9gVpl4CM2KCpE+uGLJ0hXxpNfGnDPAN8xpNPQ752tnoR+1OAA8ZFYzDOn1NSHqkkEtgtgmXi95vy/nOp+fx2AQcFN9pmkIqcCOB8bOfV0uf9IBf32hvqGrTHszDyg9f/dLf870JLmVyps6I0dr3TG5SaiqimyhqMwe+797basoIYOBu7oxaXhYGZOh4AXmej9iiGsbgBq+xZYMJzyc0Fd8fBiN0vo06hqv7jPKcCEYblkeu7mIH4qc/8xi9fSeCNNWdhDXMg2dQZaRxZs4cpOUNtVD7wbk/3A6aWNZqhnDhmZ1Z2Sirurm+jBZFN/FblbmJq6KGJZ0t40HzhuHztMlC0XKWrb4= # see README
