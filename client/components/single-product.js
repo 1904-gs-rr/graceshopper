@@ -16,7 +16,7 @@ class SingleProduct extends React.Component {
     )
     this.setState({product: data})
   }
-  addToCart(event) {
+  addToCart(event, value) {
     if (!this.props.user.id) {
       if (localStorage.getItem('cart')) {
         let cart = JSON.parse(localStorage.getItem('cart'))
@@ -26,16 +26,16 @@ class SingleProduct extends React.Component {
         for (let i = 0; i < cart.length; i++) {
           if (cart[i].id === event.id) {
             // if item is in cart
-            cart[i].cartQuantity = cart[i].cartQuantity + 1
+            cart[i].cartQuantity =
+              parseInt(cart[i].cartQuantity) + parseInt(value)
             found = true
           }
         }
         if (!found) {
-          event.cartQuantity = 1
+          event.cartQuantity = value
           cart.push(event)
         }
         found = false
-        // if (cart.includes(stringifiedEvent)) cart.push(event)
         cart = JSON.stringify(cart)
         localStorage.setItem('cart', cart)
       } else {
@@ -52,7 +52,8 @@ class SingleProduct extends React.Component {
   render() {
     const product = this.state.product
     let options = []
-    for (let i = 0; i <= product.quantity; i++) {
+    let selectQuantity = 10 < product.quantity ? 10 : product.quantity
+    for (let i = 0; i <= selectQuantity; i++) {
       options.push(
         <option key={i} value={i}>
           {i}
@@ -69,7 +70,7 @@ class SingleProduct extends React.Component {
           type="button"
           onClick={
             !this.props.user.id
-              ? () => this.addToCart(product)
+              ? () => this.addToCart(product, this.refs.productQuantity.value)
               : () =>
                   this.props.userAdd(product, this.refs.productQuantity.value)
           }
