@@ -56,9 +56,9 @@ class AllProducts extends React.Component {
                 <h2>{product.name}</h2>
               </NavLink>
               <img src={product.imageUrl} />
-              <p>Quantity: {product.quantity}</p>
+              {/* <p>Quantity: {product.quantity}</p> */}
               <p>Price: $ {product.price}</p>
-              <button
+              {/* <button
                 onClick={
                   !this.props.user.id
                     ? () => this.addToCart(product)
@@ -66,7 +66,7 @@ class AllProducts extends React.Component {
                 }
               >
                 Add to cart
-              </button>
+              </button> */}
             </div>
           )
         })}
