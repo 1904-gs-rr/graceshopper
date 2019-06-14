@@ -7,6 +7,7 @@ class Cart extends React.Component {
   constructor() {
     super()
   }
+
   componentDidMount() {
     if (this.props.user.id) {
       this.props.getCart()
