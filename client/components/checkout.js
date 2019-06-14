@@ -9,15 +9,7 @@ class Checkout extends React.Component {
     super()
   }
   componentDidMount() {
-    if (this.props.user.id) {
-      this.props.getCart()
-    } else {
-      let cart = JSON.parse(localStorage.getItem('cart'))
-      if (cart === null) {
-        cart = []
-      }
-      this.props.guestAdd(cart)
-    }
+    this.props.getCart()
   }
   async submitOrder() {
     await Axios.put('/api/checkout')
@@ -41,13 +33,7 @@ class Checkout extends React.Component {
             </div>
           )
         })}
-        <button
-          onClick={
-            this.props.user.id ? this.submitOrder : this.submitGuestOrder
-          }
-        >
-          Submit Order
-        </button>
+        <button onClick={this.submitOrder}>Submit Order</button>
       </div>
     )
   }
@@ -64,9 +50,6 @@ const mapDispatchToProps = dispatch => {
   return {
     getCart: () => {
       return dispatch(getCart())
-    },
-    guestAdd: cart => {
-      return dispatch(guestAdd(cart))
     }
   }
 }
