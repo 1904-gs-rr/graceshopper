@@ -40,7 +40,7 @@ class SingleProduct extends React.Component {
         localStorage.setItem('cart', cart)
       } else {
         let cart = []
-        event.cartQuantity = 1
+        event.cartQuantity = value
         cart.push(event)
         cart = JSON.stringify(cart)
         localStorage.setItem('cart', cart)
@@ -52,7 +52,19 @@ class SingleProduct extends React.Component {
   render() {
     const product = this.state.product
     let options = []
-    let selectQuantity = 10 < product.quantity ? 10 : product.quantity
+    console.log('CART QUANTITY:', product.cartQuantity)
+    console.log(JSON.parse(localStorage.getItem('cart')))
+    let availableBeforeCheckout
+    if (this.props.user.id) {
+      availableBeforeCheckout =
+        parseInt(product.quantity) - parseInt(product.cartQuantity)
+    } else {
+      console.log('CARTCARTCART', JSON.parse(localStorage.getItem('cart')))
+      // console.log('THISTHISTHISTHSI', q)s
+      // availableBeforeCheckout = parseInt(product.quantity) - parseInt(q)
+    }
+
+    let selectQuantity = 10 < availableBeforeCheckout ? 10 : product.quantity
     for (let i = 0; i <= selectQuantity; i++) {
       options.push(
         <option key={i} value={i}>
