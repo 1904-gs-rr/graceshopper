@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {getCart} from '../store/cart'
+import {getCart, guestAdd} from '../store/cart'
 import {NavLink} from 'react-router-dom'
 import Axios from 'axios'
 
@@ -9,11 +9,24 @@ class Checkout extends React.Component {
     super()
   }
   componentDidMount() {
-    this.props.getCart()
+    if (this.props.user.id) {
+      this.props.getCart()
+    } else {
+      let cart = JSON.parse(localStorage.getItem('cart'))
+      if (cart === null) {
+        cart = []
+      }
+      this.props.guestAdd(cart)
+    }
   }
   async submitOrder() {
     await Axios.put('/api/checkout')
   }
+
+  submitGuestOrder() {
+    localStorage.removeItem('cart')
+  }
+
   render() {
     console.log(this.props.cart)
     return (
@@ -28,7 +41,13 @@ class Checkout extends React.Component {
             </div>
           )
         })}
-        <button onClick={this.submitOrder}>Submit Order</button>
+        <button
+          onClick={
+            this.props.user.id ? this.submitOrder : this.submitGuestOrder
+          }
+        >
+          Submit Order
+        </button>
       </div>
     )
   }
@@ -45,6 +64,9 @@ const mapDispatchToProps = dispatch => {
   return {
     getCart: () => {
       return dispatch(getCart())
+    },
+    guestAdd: cart => {
+      return dispatch(guestAdd(cart))
     }
   }
 }
