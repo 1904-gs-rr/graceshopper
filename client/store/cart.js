@@ -71,6 +71,9 @@ export default function(state = defaultCart, action) {
           state[idx].cartQuantity = action.quantity
         }
       })
+      state = state.filter(item => {
+        return item.cartQuantity !== 0
+      })
       return [...state]
     default:
       return state
