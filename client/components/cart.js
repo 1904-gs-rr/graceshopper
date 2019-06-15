@@ -58,8 +58,8 @@ class Cart extends React.Component {
                 type="button"
                 onClick={
                   this.props.user.id
-                    ? () => this.props.userEdit(product, this.refs[ref].value)
-                    : () => this.changeQuantity(product, this.refs[ref].value)
+                    ? () => this.props.userEdit(product, +this.refs[ref].value)
+                    : () => this.changeQuantity(product, +this.refs[ref].value)
                 }
               >
                 Change Quantity

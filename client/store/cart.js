@@ -28,6 +28,11 @@ export const addingItem = (item, quantity) => {
   return async dispatch => {
     try {
       await axios.put(`/api/cart/add`, {item, quantity})
+      if (item.cartQuantity) {
+        item.cartQuantity = item.cartQuantity + quantity
+      } else {
+        item.cartQuantity = quantity
+      }
       dispatch(addItem(item))
     } catch (err) {
       console.error(err)
@@ -63,7 +68,7 @@ export default function(state = defaultCart, action) {
       state.forEach((item, idx) => {
         if (item.id === action.item.id) {
           state[idx] = action.item
-          state[idx].cartQuantity = +action.quantity
+          state[idx].cartQuantity = action.quantity
         }
       })
       return [...state]

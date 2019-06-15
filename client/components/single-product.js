@@ -32,8 +32,7 @@ class SingleProduct extends React.Component {
         for (let i = 0; i < cart.length; i++) {
           if (cart[i].id === event.id) {
             // if item is in cart
-            cart[i].cartQuantity =
-              parseInt(cart[i].cartQuantity) + parseInt(value)
+            cart[i].cartQuantity = +cart[i].cartQuantity + +value
             found = true
           }
         }
@@ -58,15 +57,23 @@ class SingleProduct extends React.Component {
   render() {
     const product = this.state.product
     let options = []
-    let [cartItem] = this.props.cart.filter(item => {
-      return product.name === item.name
-    })
     let availableBeforeCheckout
-    if (cartItem) {
-      availableBeforeCheckout = cartItem.quantity - cartItem.cartQuantity
+
+    if (this.props.cart) {
+      let [cartItem] = this.props.cart.filter(item => {
+        return product.name === item.name
+      })
+      console.log(cartItem)
+      if (cartItem) {
+        availableBeforeCheckout = +cartItem.quantity - +cartItem.cartQuantity
+        console.log(typeof cartItem.quantity, typeof cartItem.cartQuantity)
+      }
     }
+
     let selectQuantity =
-      availableBeforeCheckout !== undefined ? availableBeforeCheckout : 10
+      availableBeforeCheckout !== undefined
+        ? availableBeforeCheckout
+        : product.quantity
     // let selectQuantity =
     //   availableBeforeCheckout > 10 ? 10 : availableBeforeCheckout
     for (let i = 0; i <= selectQuantity; i++) {
