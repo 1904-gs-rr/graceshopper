@@ -20,6 +20,9 @@ router.get('/', async (req, res, next) => {
         return product
       })
       cartQuantProducts = await Promise.all(cartQuantProducts)
+      cartQuantProducts = cartQuantProducts.filter(item => {
+        return item.dataValues.cart_product.dataValues.cartQuantity !== 0
+      })
 
       // console.log(productFromCart)
       // await CartProduct.update(

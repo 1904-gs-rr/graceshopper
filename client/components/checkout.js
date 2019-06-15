@@ -22,7 +22,6 @@ class Checkout extends React.Component {
   }
 
   render() {
-    console.log(this.props.cart)
     return (
       <div>
         <h1>Products in Cart:</h1>
