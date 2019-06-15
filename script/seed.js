@@ -13,25 +13,23 @@ async function seed() {
   ])
   const products = await Promise.all([
     Product.create({
-      name: 'Cups',
+      name: 'Galacticos 3X8VD',
       imageUrl:
-        'https://cdn.shopify.com/s/files/1/0770/4637/products/black_main_large.jpg?v=1454511927',
+        'http://pluspng.com/img-png/planet-png-hd-moon-and-planets-hd-lwp-300.png',
       quantity: 10,
-      price: 1500
+      price: 27499999
     }),
     Product.create({
-      name: 'Plates',
-      imageUrl:
-        'https://media.istockphoto.com/photos/simple-circular-porcelain-plate-isolated-on-whit-picture-id860188194?k=6&m=860188194&s=612x612&w=0&h=S101EorVtE1kwwms-d-_yXboTNwtdqCFb8meV8_Lxu0=',
+      name: 'Cormorant 3SSI',
+      imageUrl: 'http://pluspng.com/img-png/planet-png-hd--300.png',
       quantity: 8,
-      price: 1200
+      price: 30000000
     }),
     Product.create({
-      name: 'Forks',
-      imageUrl:
-        'https://media.gettyimages.com/photos/dishware-picture-id598721906?s=2048x2048',
+      name: 'Valkyrie',
+      imageUrl: 'http://pluspng.com/img-png/planet-png-hd--300.png',
       quantity: 5,
-      price: 400
+      price: 19500000
     })
   ])
   const order = await Order.create({})
