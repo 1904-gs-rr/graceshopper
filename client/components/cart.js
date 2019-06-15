@@ -33,7 +33,7 @@ class Cart extends React.Component {
     // let selectQuantity = 10 < availableBeforeCheckout ? 10 : product.quantity
     for (let i = 0; i <= 10; i++) {
       options.push(
-        <option key={i} value={i}>
+        <option key={i} value={String(i)}>
           {i}
         </option>
       )
@@ -48,19 +48,13 @@ class Cart extends React.Component {
                 <h3>{product.name}</h3>
                 <img src={product.imageUrl} />
                 <h3>Quantity: {product.cartQuantity} </h3>
-                <select ref="productQuantity">{options}</select>
+                <select value={product.cartQuantity}>{options}</select>
                 <button
                   type="button"
-                  defaultValue={product.cartQuantity}
                   onClick={
-                    (console.log('PRODUCT:', product),
-                    // this.props.user.id
-                    // ? () =>
-                    //     this.props.userAdd(
-                    //       product,
-                    //       this.refs.productQuantity.value
-                    //     )
-                    () => this.changeQuantity(product))
+                    this.props.user.id
+                      ? () => this.props.userAdd(product, event.target.value)
+                      : () => this.changeQuantity(product)
                   }
                 >
                   Change Quantity
