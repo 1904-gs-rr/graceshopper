@@ -22,14 +22,14 @@ async function seed() {
     Product.create({
       name: 'Plates',
       imageUrl:
-        'https://media.istockphoto.com/photos/simple-circular-porcelain-plate-isolated-on-whit-picture-id860188194?k=6&m=860188194&s=612x612&w=0&h=S101EorVtE1kwwms-d-_yXboTNwtdqCFb8meV8_Lxu0=',
+        'https://cdn.shopify.com/s/files/1/0078/3807/2889/products/small_woodgrain_plate_300x300.jpg?v=1532459883',
       quantity: 8,
       price: 1200
     }),
     Product.create({
       name: 'Forks',
       imageUrl:
-        'https://media.gettyimages.com/photos/dishware-picture-id598721906?s=2048x2048',
+        'https://sc01.alicdn.com/kf/HTB1UAIPncjI8KJjSsppq6xbyVXaK/SUS-201-stainless-steel-small-metal-fork.jpg_300x300.jpg',
       quantity: 5,
       price: 400
     })

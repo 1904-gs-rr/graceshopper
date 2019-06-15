@@ -41,32 +41,34 @@ class Cart extends React.Component {
     return (
       <div>
         <h1>Products in Cart:</h1>
-        {this.props.cart.map(product => {
-          return (
-            <div key={product.id}>
-              <h3>{product.name}</h3>
-              <img src={product.imageUrl} />
-              <h3>Quantity: {product.cartQuantity} </h3>
-              <select ref="productQuantity">{options}</select>
-              <button
-                type="button"
-                defaultValue={product.cartQuantity}
-                onClick={
-                  (console.log('PRODUCT:', product),
-                  // this.props.user.id
-                  // ? () =>
-                  //     this.props.userAdd(
-                  //       product,
-                  //       this.refs.productQuantity.value
-                  //     )
-                  () => this.changeQuantity(product))
-                }
-              >
-                Change Quantity
-              </button>
-            </div>
-          )
-        })}
+        <div className="all-products-in-cart">
+          {this.props.cart.map(product => {
+            return (
+              <div key={product.id}>
+                <h3>{product.name}</h3>
+                <img src={product.imageUrl} />
+                <h3>Quantity: {product.cartQuantity} </h3>
+                <select ref="productQuantity">{options}</select>
+                <button
+                  type="button"
+                  defaultValue={product.cartQuantity}
+                  onClick={
+                    (console.log('PRODUCT:', product),
+                    // this.props.user.id
+                    // ? () =>
+                    //     this.props.userAdd(
+                    //       product,
+                    //       this.refs.productQuantity.value
+                    //     )
+                    () => this.changeQuantity(product))
+                  }
+                >
+                  Change Quantity
+                </button>
+              </div>
+            )
+          })}
+        </div>
       </div>
     )
   }

@@ -19,3 +19,11 @@ form div {
   margin: 1em;
   display: inline-block;
 }
+
+.all-products {
+  display: flex;
+}
+
+.all-products-in-cart {
+  display: flex;
+}

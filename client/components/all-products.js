@@ -49,16 +49,17 @@ class AllProducts extends React.Component {
     return (
       <div>
         <h1>All Products</h1>
-        {this.props.products.map(product => {
-          return (
-            <div key={product.id}>
-              <NavLink to={`/products/${product.id}`}>
-                <h2>{product.name}</h2>
-              </NavLink>
-              <img src={product.imageUrl} />
-              {/* <p>Quantity: {product.quantity}</p> */}
-              <p>Price: $ {product.price}</p>
-              {/* <button
+        <div className="all-products">
+          {this.props.products.map(product => {
+            return (
+              <div key={product.id}>
+                <NavLink to={`/products/${product.id}`}>
+                  <h2>{product.name}</h2>
+                </NavLink>
+                <img src={product.imageUrl} />
+                {/* <p>Quantity: {product.quantity}</p> */}
+                <p>Price: $ {product.price}</p>
+                {/* <button
                 onClick={
                   !this.props.user.id
                     ? () => this.addToCart(product)
@@ -67,9 +68,10 @@ class AllProducts extends React.Component {
               >
                 Add to cart
               </button> */}
-            </div>
-          )
-        })}
+              </div>
+            )
+          })}
+        </div>
       </div>
     )
   }
