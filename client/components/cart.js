@@ -1,11 +1,19 @@
 import React from 'react'
 import {connect} from 'react-redux'
+import {persistStore} from 'redux-persist'
+
+import {me} from '../store/user'
 import {getCart, guestAdd, addingItem} from '../store/cart'
 import {NavLink} from 'react-router-dom'
 
 class Cart extends React.Component {
   constructor() {
     super()
+    this.state = {
+      value: 0
+    }
+    this.handleChange = this.handleChange.bind(this)
+    this.changeQuantity = this.changeQuantity.bind(this)
   }
   changeQuantity(prod) {
     let cart = JSON.parse(localStorage.getItem('cart'))
@@ -18,6 +26,7 @@ class Cart extends React.Component {
     this.props.guestAdd(cart)
   }
   componentDidMount() {
+    console.log('USER IN CART:', this.props.user)
     if (this.props.user.id) {
       this.props.getCart()
     } else {
@@ -28,7 +37,11 @@ class Cart extends React.Component {
       this.props.guestAdd(cart)
     }
   }
+  handleChange(event) {
+    this.setState({value: event.target.value})
+  }
   render() {
+    console.log('USER ID:', this.props.user.id)
     let options = []
     // let selectQuantity = 10 < availableBeforeCheckout ? 10 : product.quantity
     for (let i = 0; i <= 10; i++) {
@@ -48,17 +61,21 @@ class Cart extends React.Component {
                 <h3>{product.name}</h3>
                 <img src={product.imageUrl} />
                 <h3>Quantity: {product.cartQuantity} </h3>
-                <select value={product.cartQuantity}>{options}</select>
-                <button
-                  type="button"
-                  onClick={
-                    this.props.user.id
-                      ? () => this.props.userAdd(product, event.target.value)
-                      : () => this.changeQuantity(product)
-                  }
-                >
-                  Change Quantity
-                </button>
+                <form>
+                  <select ref="productQuantity" onChange={this.handleChange}>
+                    {options}
+                  </select>
+                  <button
+                    type="button"
+                    onClick={
+                      this.props.user.id
+                        ? () => this.props.userAdd(product, this.state.value)
+                        : () => this.changeQuantity(product)
+                    }
+                  >
+                    Change Quantity
+                  </button>
+                </form>
               </div>
             )
           })}
@@ -83,6 +100,9 @@ const mapDispatchToProps = dispatch => {
     },
     userAdd: (item, quantity) => {
       return dispatch(addingItem(item, quantity))
+    },
+    me: () => {
+      return dispatch(me())
     }
   }
 }

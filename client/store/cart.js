@@ -38,7 +38,6 @@ export default function(state = defaultCart, action) {
     case GOT_CART:
       return action.cart
     case ADD_ITEM:
-      console.log('ACTION QUANTITY:', action.quantity)
       const newState = state.map(prod => {
         if (prod.id === action.item.id) {
           prod.cartQuantity = parseInt(action.quantity)
