@@ -1,7 +1,8 @@
 import React from 'react'
 import {connect} from 'react-redux'
+
 import {getCart, guestAdd, addingItem, editingItem} from '../store/cart'
-import {NavLink} from 'react-router-dom'
+import {NavLink, Redirect} from 'react-router-dom'
 
 class Cart extends React.Component {
   constructor() {
@@ -17,6 +18,7 @@ class Cart extends React.Component {
     localStorage.setItem('cart', JSON.stringify(cart))
     this.props.guestAdd(cart)
   }
+
   componentDidMount() {
     if (this.props.user.id) {
       this.props.getCart()
@@ -28,6 +30,7 @@ class Cart extends React.Component {
       this.props.guestAdd(cart)
     }
   }
+
   componentDidUpdate(prevProps) {
     if (this.props.user.id !== prevProps.user.id) {
       this.props.getCart()
@@ -67,6 +70,7 @@ class Cart extends React.Component {
             </div>
           )
         })}
+        <NavLink to="/checkout">To Checkout</NavLink>
       </div>
     )
   }
