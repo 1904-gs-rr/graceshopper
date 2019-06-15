@@ -19,7 +19,6 @@ router.put('/', async (req, res, next) => {
     const newOrder = await Order.create({})
     user.addOrder(newOrder)
     req.session.cartId = newOrder.id
-    console.log(req.session.cartId)
     res.send(productsFromCart)
   } catch (error) {
     next(error)

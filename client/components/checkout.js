@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import {getCart, guestAdd} from '../store/cart'
 import {NavLink} from 'react-router-dom'
 import Axios from 'axios'
+import history from '../history'
 
 class Checkout extends React.Component {
   constructor() {
@@ -13,6 +14,7 @@ class Checkout extends React.Component {
   }
   async submitOrder() {
     await Axios.put('/api/checkout')
+    history.push('/thanks')
   }
 
   submitGuestOrder() {
