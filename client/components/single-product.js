@@ -1,7 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import axios from 'axios'
-import {guestAdd, addingItem} from '../store/cart'
+import {guestAdd, addingItem, getCart} from '../store/cart'
 
 class SingleProduct extends React.Component {
   constructor() {
@@ -15,8 +15,14 @@ class SingleProduct extends React.Component {
       `/api/products/${this.props.match.params.id}`
     )
     this.setState({product: data})
+    if (this.props.user.id) {
+      this.props.getCart()
+    } else {
+      let cart = JSON.parse(localStorage.getItem('cart'))
+      this.props.guestAdd(cart)
+    }
   }
-  addToCart(event) {
+  addToCart(event, value) {
     if (!this.props.user.id) {
       if (localStorage.getItem('cart')) {
         let cart = JSON.parse(localStorage.getItem('cart'))
@@ -26,21 +32,20 @@ class SingleProduct extends React.Component {
         for (let i = 0; i < cart.length; i++) {
           if (cart[i].id === event.id) {
             // if item is in cart
-            cart[i].cartQuantity = cart[i].cartQuantity + 1
+            cart[i].cartQuantity = +cart[i].cartQuantity + +value
             found = true
           }
         }
         if (!found) {
-          event.cartQuantity = 1
+          event.cartQuantity = value
           cart.push(event)
         }
         found = false
-        // if (cart.includes(stringifiedEvent)) cart.push(event)
         cart = JSON.stringify(cart)
         localStorage.setItem('cart', cart)
       } else {
         let cart = []
-        event.cartQuantity = 1
+        event.cartQuantity = value
         cart.push(event)
         cart = JSON.stringify(cart)
         localStorage.setItem('cart', cart)
@@ -52,7 +57,26 @@ class SingleProduct extends React.Component {
   render() {
     const product = this.state.product
     let options = []
-    for (let i = 0; i <= product.quantity; i++) {
+    let availableBeforeCheckout
+
+    if (this.props.cart) {
+      let [cartItem] = this.props.cart.filter(item => {
+        return product.name === item.name
+      })
+      console.log(cartItem)
+      if (cartItem) {
+        availableBeforeCheckout = +cartItem.quantity - +cartItem.cartQuantity
+        console.log(typeof cartItem.quantity, typeof cartItem.cartQuantity)
+      }
+    }
+
+    let selectQuantity =
+      availableBeforeCheckout !== undefined
+        ? availableBeforeCheckout
+        : product.quantity
+    // let selectQuantity =
+    //   availableBeforeCheckout > 10 ? 10 : availableBeforeCheckout
+    for (let i = 0; i <= selectQuantity; i++) {
       options.push(
         <option key={i} value={i}>
           {i}
@@ -63,15 +87,15 @@ class SingleProduct extends React.Component {
       <div>
         <h1>{product.name}</h1>
         <img src={product.imageUrl} />
-        <h2>Quantity: {product.quantity}</h2>
+        <h2>In stock: {product.quantity}</h2>
         <select ref="productQuantity">{options}</select>
         <button
           type="button"
           onClick={
             !this.props.user.id
-              ? () => this.addToCart(product)
+              ? () => this.addToCart(product, +this.refs.productQuantity.value)
               : () =>
-                  this.props.userAdd(product, this.refs.productQuantity.value)
+                  this.props.userAdd(product, +this.refs.productQuantity.value)
           }
         >
           Add to cart
@@ -84,7 +108,8 @@ class SingleProduct extends React.Component {
 const mapStateToProps = state => {
   return {
     products: state.products,
-    user: state.user
+    user: state.user,
+    cart: state.cart
   }
 }
 
@@ -95,6 +120,9 @@ const mapDispatchToProps = dispatch => {
     },
     userAdd: (item, quantity) => {
       return dispatch(addingItem(item, quantity))
+    },
+    getCart: () => {
+      return dispatch(getCart())
     }
   }
 }

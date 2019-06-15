@@ -8,7 +8,7 @@ User.hasMany(Order)
 const CartProduct = db.define('cart_product', {
   cartQuantity: {
     type: Sequelize.INTEGER,
-    defaultValue: 1
+    defaultValue: 0
   }
 })
 
