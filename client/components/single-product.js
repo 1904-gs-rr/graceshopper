@@ -1,7 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import axios from 'axios'
-import {guestAdd, addingItem} from '../store/cart'
+import {guestAdd, addingItem, getCart} from '../store/cart'
 
 class SingleProduct extends React.Component {
   constructor() {
@@ -15,6 +15,12 @@ class SingleProduct extends React.Component {
       `/api/products/${this.props.match.params.id}`
     )
     this.setState({product: data})
+    if (this.props.user.id) {
+      this.props.getCart()
+    } else {
+      let cart = JSON.parse(localStorage.getItem('cart'))
+      this.props.guestAdd(cart)
+    }
   }
   addToCart(event, value) {
     if (!this.props.user.id) {
@@ -52,19 +58,17 @@ class SingleProduct extends React.Component {
   render() {
     const product = this.state.product
     let options = []
-    console.log('CART QUANTITY:', product.cartQuantity)
-    console.log(JSON.parse(localStorage.getItem('cart')))
+    let [cartItem] = this.props.cart.filter(item => {
+      return product.name === item.name
+    })
     let availableBeforeCheckout
-    if (this.props.user.id) {
-      availableBeforeCheckout =
-        parseInt(product.quantity) - parseInt(product.cartQuantity)
-    } else {
-      console.log('CARTCARTCART', JSON.parse(localStorage.getItem('cart')))
-      // console.log('THISTHISTHISTHSI', q)s
-      // availableBeforeCheckout = parseInt(product.quantity) - parseInt(q)
+    if (cartItem) {
+      availableBeforeCheckout = cartItem.quantity - cartItem.cartQuantity
     }
-
-    let selectQuantity = 10 < availableBeforeCheckout ? 10 : product.quantity
+    let selectQuantity =
+      availableBeforeCheckout !== undefined ? availableBeforeCheckout : 10
+    // let selectQuantity =
+    //   availableBeforeCheckout > 10 ? 10 : availableBeforeCheckout
     for (let i = 0; i <= selectQuantity; i++) {
       options.push(
         <option key={i} value={i}>
@@ -76,15 +80,15 @@ class SingleProduct extends React.Component {
       <div>
         <h1>{product.name}</h1>
         <img src={product.imageUrl} />
-        <h2>Quantity: {product.quantity}</h2>
+        <h2>In stock: {product.quantity}</h2>
         <select ref="productQuantity">{options}</select>
         <button
           type="button"
           onClick={
             !this.props.user.id
-              ? () => this.addToCart(product, this.refs.productQuantity.value)
+              ? () => this.addToCart(product, +this.refs.productQuantity.value)
               : () =>
-                  this.props.userAdd(product, this.refs.productQuantity.value)
+                  this.props.userAdd(product, +this.refs.productQuantity.value)
           }
         >
           Add to cart
@@ -97,7 +101,8 @@ class SingleProduct extends React.Component {
 const mapStateToProps = state => {
   return {
     products: state.products,
-    user: state.user
+    user: state.user,
+    cart: state.cart
   }
 }
 
@@ -108,6 +113,9 @@ const mapDispatchToProps = dispatch => {
     },
     userAdd: (item, quantity) => {
       return dispatch(addingItem(item, quantity))
+    },
+    getCart: () => {
+      return dispatch(getCart())
     }
   }
 }

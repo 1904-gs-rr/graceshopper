@@ -1,17 +1,17 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {getCart, guestAdd, addingItem} from '../store/cart'
+import {getCart, guestAdd, addingItem, editingItem} from '../store/cart'
 import {NavLink} from 'react-router-dom'
 
 class Cart extends React.Component {
   constructor() {
     super()
   }
-  changeQuantity(prod) {
+  changeQuantity(prod, ref) {
     let cart = JSON.parse(localStorage.getItem('cart'))
     cart.forEach(el => {
       if (el.id === prod.id) {
-        el.cartQuantity = this.refs.productQuantity.value
+        el.cartQuantity = ref
       }
     })
     localStorage.setItem('cart', JSON.stringify(cart))
@@ -28,38 +28,38 @@ class Cart extends React.Component {
       this.props.guestAdd(cart)
     }
   }
-  render() {
-    let options = []
-    // let selectQuantity = 10 < availableBeforeCheckout ? 10 : product.quantity
-    for (let i = 0; i <= 10; i++) {
-      options.push(
-        <option key={i} value={i}>
-          {i}
-        </option>
-      )
+  componentDidUpdate(prevProps) {
+    if (this.props.user.id !== prevProps.user.id) {
+      this.props.getCart()
     }
+  }
+  render() {
     return (
       <div>
         <h1>Products in Cart:</h1>
         {this.props.cart.map(product => {
+          let ref = `productQuantity${product.id}`
+          let options = []
+          let selectQuantity = product.quantity > 10 ? 10 : product.quantity
+          for (let i = 0; i <= selectQuantity; i++) {
+            options.push(
+              <option key={i} value={i}>
+                {i}
+              </option>
+            )
+          }
           return (
             <div key={product.id}>
               <h3>{product.name}</h3>
               <img src={product.imageUrl} />
               <h3>Quantity: {product.cartQuantity} </h3>
-              <select ref="productQuantity">{options}</select>
+              <select ref={ref}>{options}</select>
               <button
                 type="button"
-                defaultValue={product.cartQuantity}
                 onClick={
-                  (console.log('PRODUCT:', product),
-                  // this.props.user.id
-                  // ? () =>
-                  //     this.props.userAdd(
-                  //       product,
-                  //       this.refs.productQuantity.value
-                  //     )
-                  () => this.changeQuantity(product))
+                  this.props.user.id
+                    ? () => this.props.userEdit(product, this.refs[ref].value)
+                    : () => this.changeQuantity(product, this.refs[ref].value)
                 }
               >
                 Change Quantity
@@ -87,6 +87,9 @@ const mapDispatchToProps = dispatch => {
     },
     userAdd: (item, quantity) => {
       return dispatch(addingItem(item, quantity))
+    },
+    userEdit: (item, quantity) => {
+      return dispatch(editingItem(item, quantity))
     }
   }
 }

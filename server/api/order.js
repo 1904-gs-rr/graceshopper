@@ -40,17 +40,46 @@ router.get('/', async (req, res, next) => {
   }
 })
 
-router.put('/', async (req, res, next) => {
+router.put('/add', async (req, res, next) => {
   try {
     const productFromCart = await CartProduct.findOrCreate({
       where: {orderId: req.session.cartId, productId: req.body.item.id}
     })
 
-    console.log(productFromCart[0])
     // if (productFromCart) {
     await productFromCart[0].update({
-      cartQuantity: req.body.quantity
+      cartQuantity: +req.body.quantity + +productFromCart[0].cartQuantity
     })
+    res.send('success!')
+    // } else {
+    //   const cart = await Order.findByPk(req.session.cartId)
+    //   const item = await Product.findByPk(req.body.item.id)
+
+    //   await cart.addProduct(item)
+    //   const productFromCart2 = await CartProduct.findOne({
+    //     where: {orderId: req.session.cartId, productId: req.body.item.id}
+    //   })
+    // await productFromCart2.update({
+    //   cartQuantity: req.body.quantity
+    // })
+    // res.send('success!')
+    // }
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.put('/edit', async (req, res, next) => {
+  try {
+    const productFromCart = await CartProduct.findOne({
+      where: {orderId: req.session.cartId, productId: req.body.item.id}
+    })
+    // if (productFromCart) {
+    await productFromCart.update({
+      cartQuantity: +req.body.quantity
+    })
+    console.log(+req.body.quantity)
+
     res.send('success!')
     // } else {
     //   const cart = await Order.findByPk(req.session.cartId)
