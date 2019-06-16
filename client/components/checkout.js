@@ -13,8 +13,12 @@ class Checkout extends React.Component {
     this.props.getCart()
   }
   async submitOrder() {
-    await Axios.put('/api/checkout')
-    history.push('/thanks')
+    try {
+      await Axios.put('/api/checkout')
+      history.push('/thanks')
+    } catch (err) {
+      history.push('/guestcheckout')
+    }
   }
 
   submitGuestOrder() {

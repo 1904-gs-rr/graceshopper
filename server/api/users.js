@@ -4,23 +4,28 @@ module.exports = router
 
 /*GET SINGLE USER BY ID*/
 router.get('/:id', async (req, res, next) => {
-  try {
-    if (req.session.userId === req.params.id) {
-      const user = await User.findOne({
-        where: {
-          id: req.params.id
+  //because of passport, every user is included in req requests in all routes:
+  // if (req.session.userId === +req.params.id)
+  console.log(cart)
+  if (req.user.id === +req.params.id)
+    try {
+      {
+        const user = await User.findOne({
+          where: {
+            id: req.params.id
+          }
+        })
+        if (!user) {
+          res.status(404).send()
+        } else {
+          res.json(user)
         }
-      })
-      if (!user) {
-        res.status(404).send()
-      } else {
-        res.json(user)
       }
-    } else {
-      res.sendStatus(401)
+    } catch (error) {
+      next(error)
     }
-  } catch (error) {
-    next(error)
+  else {
+    res.sendStatus(401)
   }
 })
 
