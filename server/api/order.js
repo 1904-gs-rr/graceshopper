@@ -20,6 +20,9 @@ router.get('/', async (req, res, next) => {
         return product
       })
       cartQuantProducts = await Promise.all(cartQuantProducts)
+      cartQuantProducts = cartQuantProducts.filter(item => {
+        return item.dataValues.cart_product.dataValues.cartQuantity !== 0
+      })
 
       // console.log(productFromCart)
       // await CartProduct.update(
@@ -78,7 +81,9 @@ router.put('/edit', async (req, res, next) => {
     await productFromCart.update({
       cartQuantity: +req.body.quantity
     })
-    console.log(+req.body.quantity)
+    if (productFromCart.cartQuantity === 0) {
+      productFromCart.destroy()
+    }
 
     res.send('success!')
     // } else {
