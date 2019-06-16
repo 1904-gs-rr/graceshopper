@@ -14,6 +14,14 @@ router.get('/', async (req, res, next) => {
 router.get('/:id', async (req, res, next) => {
   //because of passport, every user is included in req requests in all routes:
   // if (req.session.userId === +req.params.id)
+  if (req.user.isAdmin) {
+    const user = await User.findOne({
+      where: {
+        id: req.params.id
+      }
+    })
+    res.json(user)
+  }
 
   if (req.user.id === +req.params.id)
     try {
