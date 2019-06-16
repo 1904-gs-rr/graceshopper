@@ -6,7 +6,7 @@ router.put('/', async (req, res, next) => {
   try {
     await Order.update({status: true}, {where: {id: req.session.cartId}})
     const productsFromCart = await CartProduct.findAll({
-      where: {orderId: req.session.cartId}
+      where: {orderId: req.user.cartId}
     })
     productsFromCart.map(async product => {
       const productInstance = await Product.findByPk(product.productId)
