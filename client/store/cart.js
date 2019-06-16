@@ -56,12 +56,19 @@ export default function(state = defaultCart, action) {
     case GOT_CART:
       return action.cart
     case ADD_ITEM:
+      let added = false
       state.forEach((item, idx) => {
         if (item.id === action.item.id) {
           state[idx] = action.item
+          added = true
         }
       })
-      return [...state]
+      if (!added) {
+        let item = action.item
+        return [...state, item]
+      } else {
+        return [...state]
+      }
     case GUEST_ADD:
       return action.cart
     case EDIT_ITEM:
