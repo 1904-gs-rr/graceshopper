@@ -20,9 +20,6 @@ router.get('/', async (req, res, next) => {
         return product
       })
       cartQuantProducts = await Promise.all(cartQuantProducts)
-      cartQuantProducts = cartQuantProducts.filter(item => {
-        return item.dataValues.cart_product.dataValues.cartQuantity !== 0
-      })
 
       // console.log(productFromCart)
       // await CartProduct.update(
@@ -40,6 +37,34 @@ router.get('/', async (req, res, next) => {
     }
   } catch (err) {
     next(err)
+  }
+})
+
+router.get('/history', async (req, res, next) => {
+  try {
+    const orders = await Order.findAll({
+      where: {userId: req.session.userId, status: true}
+    })
+
+    res.send(orders)
+    // res.send(submittedOrders)
+  } catch (error) {
+    next(error)
+  }
+})
+
+router.get('/history/:orderId', async (req, res, next) => {
+  try {
+    const orderDetails = await CartProduct.findAll({
+      where: {orderId: req.params.orderId}
+    })
+    const products = await Promise.all(
+      orderDetails.map(order => Product.findByPk(order.productId))
+    )
+    res.send(products)
+    // res.send(submittedOrders)
+  } catch (error) {
+    next(error)
   }
 })
 
@@ -81,9 +106,7 @@ router.put('/edit', async (req, res, next) => {
     await productFromCart.update({
       cartQuantity: +req.body.quantity
     })
-    if (productFromCart.cartQuantity === 0) {
-      productFromCart.destroy()
-    }
+    console.log(+req.body.quantity)
 
     res.send('success!')
     // } else {
