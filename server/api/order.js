@@ -106,7 +106,10 @@ router.put('/edit', async (req, res, next) => {
     await productFromCart.update({
       cartQuantity: +req.body.quantity
     })
-    console.log(+req.body.quantity)
+
+    if (productFromCart.cartQuantity === 0) {
+      await productFromCart.destroy()
+    }
 
     res.send('success!')
     // } else {
