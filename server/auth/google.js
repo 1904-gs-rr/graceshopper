@@ -1,7 +1,7 @@
 const passport = require('passport')
 const router = require('express').Router()
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy
-const {User} = require('../db/models')
+const {User, Order} = require('../db/models')
 module.exports = router
 
 /**
@@ -12,11 +12,19 @@ module.exports = router
  * these secrets that you only share with your team - it should NOT be tracked
  * by git! In this case, you may use a file called `secrets.js`, which will
  * set these environment variables like so:
- *
- * process.env.GOOGLE_CLIENT_ID = 'your google client id'
- * process.env.GOOGLE_CLIENT_SECRET = 'your google client secret'
- * process.env.GOOGLE_CALLBACK = '/your/google/callback'
- */
+ //  */
+
+// HEROKU
+// process.env.GOOGLE_CLIENT_ID =
+//   '449126159282-ff34161e5udmc2ofp9rm592f2nradbqn.apps.googleusercontent.com'
+// process.env.GOOGLE_CLIENT_SECRET = 'A_WWAIgK0Zf1OT31eZ7RQD6u'
+// process.env.GOOGLE_CALLBACK = '/auth/google/callback'
+
+//LOCAL
+process.env.GOOGLE_CLIENT_ID =
+  '449126159282-7bt3n4fgfopkdd0lpssbad9353fkesg9.apps.googleusercontent.com'
+process.env.GOOGLE_CLIENT_SECRET = '3eskchLypLthOQsb_CE0f5A2'
+process.env.GOOGLE_CALLBACK = '/auth/google/callback'
 
 if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
   console.log('Google client ID / secret not found. Skipping Google OAuth.')
