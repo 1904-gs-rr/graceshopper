@@ -43,7 +43,7 @@ router.get('/', async (req, res, next) => {
 router.get('/history', async (req, res, next) => {
   try {
     const orders = await Order.findAll({
-      where: {userId: req.session.userId, status: true}
+      where: {userId: req.user.id, status: true}
     })
 
     res.send(orders)
