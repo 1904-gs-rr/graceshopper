@@ -126,3 +126,18 @@ router.put('/edit', async (req, res, next) => {
     next(err)
   }
 })
+
+router.put('/transferGuestCart', async (req, res, next) => {
+  try {
+    await req.body.forEach(async item => {
+      await CartProduct.create({
+        cartQuantity: item.cartQuantity,
+        orderId: req.session.cartId,
+        productId: item.id
+      })
+    })
+    res.send('success!')
+  } catch (err) {
+    next(err)
+  }
+})

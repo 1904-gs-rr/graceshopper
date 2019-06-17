@@ -2,16 +2,17 @@ import React from 'react'
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 import {auth} from '../store'
+import axios from 'axios'
 
 /**
  * COMPONENT
  */
 const AuthForm = props => {
-  const {name, displayName, handleSubmit, error} = props
+  const {name, displayName, handleSubmit, error, cart} = props
 
   return (
     <div>
-      <form onSubmit={handleSubmit} name={name}>
+      <form onSubmit={() => handleSubmit(event, cart)} name={name}>
         <div>
           <label htmlFor="email">
             <small>Email</small>
@@ -45,7 +46,8 @@ const mapLogin = state => {
   return {
     name: 'login',
     displayName: 'Login',
-    error: state.user.error
+    error: state.user.error,
+    cart: state.cart
   }
 }
 
@@ -53,18 +55,19 @@ const mapSignup = state => {
   return {
     name: 'signup',
     displayName: 'Sign Up',
-    error: state.user.error
+    error: state.user.error,
+    cart: state.cart
   }
 }
 
 const mapDispatch = dispatch => {
   return {
-    handleSubmit(evt) {
-      evt.preventDefault()
-      const formName = evt.target.name
-      const email = evt.target.email.value
-      const password = evt.target.password.value
-      dispatch(auth(email, password, formName))
+    handleSubmit(event, cart) {
+      event.preventDefault()
+      const formName = event.target.name
+      const email = event.target.email.value
+      const password = event.target.password.value
+      dispatch(auth(email, password, formName, cart))
     }
   }
 }
