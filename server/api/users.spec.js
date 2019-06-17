@@ -20,7 +20,7 @@ describe('Backend security', () => {
       })
     })
 
-    it('GET /api/users/1', async () => {
+    xit('GET /api/users/1', async () => {
       const res = await request(app)
         .get('/api/users/1')
         .expect(200)
