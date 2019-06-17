@@ -16,6 +16,7 @@ import Cart from './components/cart'
 import Checkout from './components/checkout'
 import {UponSubmission} from './components/upon-submission'
 import {UponGuestSubmission} from './components/upon-guest-submission'
+import UserProfile from './components/user-profile'
 /**
  * COMPONENT
  */
@@ -42,6 +43,7 @@ class Routes extends Component {
           <Switch>
             {/* Routes placed here are only available after logging in */}
             <Route path="/home" component={UserHome} />
+            <Route path="/userprofile" component={UserProfile} />
             <Route exact path="/orders/history" component={Orders} />
             <Route
               exact
@@ -51,7 +53,7 @@ class Routes extends Component {
           </Switch>
         )}
         {/* Displays our Login component as a fallback */}
-        <Redirect to="/products" />
+        {/* <Redirect to="/products" /> */}
       </Switch>
     )
   }
