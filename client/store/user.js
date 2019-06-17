@@ -31,10 +31,11 @@ export const me = () => async dispatch => {
   }
 }
 
-export const auth = (email, password, method) => async dispatch => {
+export const auth = (email, password, method, cart) => async dispatch => {
   let res
   try {
     res = await axios.post(`/auth/${method}`, {email, password})
+    await axios.put('/api/cart/transferGuestCart', cart)
   } catch (authError) {
     return dispatch(getUser({error: authError}))
   }
@@ -50,6 +51,7 @@ export const auth = (email, password, method) => async dispatch => {
 export const logout = () => async dispatch => {
   try {
     await axios.post('/auth/logout')
+    localStorage.removeItem('cart')
     dispatch(removeUser())
     // dispatch(getCart({}))
     history.push('/login')

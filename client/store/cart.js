@@ -5,6 +5,7 @@ const GOT_CART = 'GOT_CART'
 const ADD_ITEM = 'ADD_ITEM'
 const GUEST_ADD = 'GUEST_ADD'
 const EDIT_ITEM = 'EDIT_ITEM'
+// const TRANSFER_GUEST_CART = 'TRANSFER_GUEST_CART'
 
 const defaultCart = []
 
@@ -12,6 +13,7 @@ const gotCart = cart => ({type: GOT_CART, cart})
 const addItem = item => ({type: ADD_ITEM, item})
 const editItem = (item, quantity) => ({type: EDIT_ITEM, item, quantity})
 export const guestAdd = cart => ({type: GUEST_ADD, cart})
+// export const transferGuestCart = cart => ({type: TRANSFER_GUEST_CART, cart})
 
 export const getCart = () => {
   return async dispatch => {
@@ -23,6 +25,16 @@ export const getCart = () => {
     }
   }
 }
+
+// export const trasnferringGuestCart = cart => {
+//   return async dispatch => {
+//     try {
+//       await axios.put('/api/cart/transferGuestCart', cart)
+//     } catch (err) {
+//       console.error(err)
+//     }
+//   }
+// }
 
 export const addingItem = (item, quantity) => {
   return async dispatch => {
