@@ -8,6 +8,7 @@ import SingleProduct from './components/single-product'
 import Cart from './components/cart'
 import Checkout from './components/checkout'
 import {UponSubmission} from './components/upon-submission'
+import {UponGuestSubmission} from './components/upon-guest-submission'
 /**
  * COMPONENT
  */
@@ -29,6 +30,7 @@ class Routes extends Component {
         <Route path="/cart" component={Cart} />
         <Route path="/thanks" component={UponSubmission} />
         <Route path="/checkout" component={Checkout} />
+        <Route path="/guestcheckout" component={UponGuestSubmission} />
         {isLoggedIn && (
           <Switch>
             {/* Routes placed here are only available after logging in */}
