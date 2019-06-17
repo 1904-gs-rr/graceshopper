@@ -18,9 +18,9 @@ router.post('/login', async (req, res, next) => {
           status: false
         }
       })
-      console.log(cart)
+      console.log('CART', cart)
       req.session.cartId = cart.id
-      req.session.userId = user.id
+      // req.session.userId = user.id
       req.login(user, err => (err ? next(err) : res.json(user)))
     }
   } catch (err) {
@@ -35,7 +35,7 @@ router.post('/signup', async (req, res, next) => {
     console.log(cart)
     await user.addOrder(cart)
     req.session.cartId = cart.id
-    req.session.userId = user.id
+    // req.session.userId = user.id
     req.login(user, err => (err ? next(err) : res.json(user)))
   } catch (err) {
     if (err.name === 'SequelizeUniqueConstraintError') {
