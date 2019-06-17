@@ -51,7 +51,6 @@ export const auth = (email, password, method, cart) => async dispatch => {
 export const logout = () => async dispatch => {
   try {
     await axios.post('/auth/logout')
-    localStorage.removeItem('cart')
     dispatch(removeUser())
     // dispatch(getCart({}))
     history.push('/login')
