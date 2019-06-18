@@ -30,11 +30,9 @@ class SingleProduct extends React.Component {
       if (localStorage.getItem('cart')) {
         let cart = JSON.parse(localStorage.getItem('cart'))
         let found = false
-        // check if it exists
-        // let stringifiedEvent = JSON.stringify(event)
+
         for (let i = 0; i < cart.length; i++) {
           if (cart[i].id === event.id) {
-            // if item is in cart
             cart[i].quantity = cart[i].quantity - value
             cart[i].cartQuantity = +cart[i].cartQuantity + +value
             found = true
@@ -88,7 +86,6 @@ class SingleProduct extends React.Component {
       )
     }
     return (
-
       <div>
         <h1>{product.name}</h1>
         <img src={product.imageUrl} />
@@ -105,7 +102,6 @@ class SingleProduct extends React.Component {
         >
           Add to cart
         </button>
-
       </div>
     )
   }

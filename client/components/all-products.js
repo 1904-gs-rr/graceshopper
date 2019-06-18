@@ -17,11 +17,9 @@ class AllProducts extends React.Component {
       if (localStorage.getItem('cart')) {
         let cart = JSON.parse(localStorage.getItem('cart'))
         let found = false
-        // check if it exists
-        // let stringifiedEvent = JSON.stringify(event)
+
         for (let i = 0; i < cart.length; i++) {
           if (cart[i].id === event.id) {
-            // if item is in cart
             cart[i].cartQuantity = cart[i].cartQuantity + 1
             found = true
           }
@@ -31,7 +29,6 @@ class AllProducts extends React.Component {
           cart.push(event)
         }
         found = false
-        // if (cart.includes(stringifiedEvent)) cart.push(event)
         cart = JSON.stringify(cart)
         localStorage.setItem('cart', cart)
       } else {
@@ -59,17 +56,8 @@ class AllProducts extends React.Component {
                 <NavLink to={`/products/${product.id}`}>
                   <h2>{product.name}</h2>
                   <img src={product.imageUrl} />
-                  {/* <p>Quantity: {product.quantity}</p> */}
+
                   <p>Price: $ {product.price / 100.0}</p>
-                  {/* <button
-                onClick={
-                  !this.props.user.id
-                    ? () => this.addToCart(product)
-                    : () => this.props.userAdd(product)
-                }
-              >
-                Add to cart
-              </button> */}
                 </NavLink>
               </div>
             )
