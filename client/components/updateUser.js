@@ -11,6 +11,7 @@ class UserUpdateForm extends React.Component {
 
   handleSubmit(evt) {
     evt.preventDefault()
+
     this.props.updateUsers(this.state, this.props.match.params.id)
   }
 
