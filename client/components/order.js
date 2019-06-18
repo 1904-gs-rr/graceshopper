@@ -15,10 +15,20 @@ export default class Orders extends React.Component {
   render() {
     return (
       <div>
-        <h1>Orders</h1>
-        {this.state.orders.map(order => (
-          <NavLink to={`/orders/history/${order.id}`}>Go to {order.id}</NavLink>
-        ))}
+        <h1>Order History</h1>
+        {!this.state.orders.length ? (
+          <h1>You do not have any placed orders</h1>
+        ) : (
+          <ul>
+            {this.state.orders.map(order => (
+              <NavLink to={`/orders/history/${order.id}`}>
+                <li key={order.id}>
+                  Order {order.id} Order Date : {order.updatedAt}
+                </li>
+              </NavLink>
+            ))}
+          </ul>
+        )}
       </div>
     )
   }
