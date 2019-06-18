@@ -37,17 +37,26 @@ if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
 
   const strategy = new GoogleStrategy(
     googleConfig,
-    (token, refreshToken, profile, done) => {
+    async (token, refreshToken, profile, done) => {
       const googleId = profile.id
       const name = profile.displayName
       const email = profile.emails[0].value
 
-      User.findOrCreate({
-        where: {googleId},
-        defaults: {name, email}
-      })
-        .then(([user]) => done(null, user))
-        .catch(done)
+      try {
+        const user = await User.findOrCreate({
+          where: {googleId},
+          defaults: {email}
+        })
+
+        if (user[1]) {
+          const cart = await Order.create({})
+          user[0].addOrder(cart)
+        }
+
+        done(null, user[0])
+      } catch (error) {
+        done()
+      }
     }
   )
 

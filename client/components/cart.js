@@ -2,7 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 
 import {getCart, guestAdd, addingItem, editingItem} from '../store/cart'
-import {NavLink, Redirect} from 'react-router-dom'
+import {NavLink} from 'react-router-dom'
 
 class Cart extends React.Component {
   constructor() {
@@ -39,6 +39,7 @@ class Cart extends React.Component {
       this.props.getCart()
     }
   }
+
   render() {
     return (
       <div>

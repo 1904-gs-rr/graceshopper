@@ -9,25 +9,36 @@ router.get('/users', async (req, res, next) => {
   } else res.sendStatus(401)
 })
 
-router.put('/admin/users/:id', async (req, res, next) => {
+router.get('/users/:id', async (req, res, next) => {
   if (req.user.isAdmin) {
-    let name = req.body.name
+    let users = await User.findByPk(req.params.id)
+    res.json(users)
+  } else res.sendStatus(401)
+})
+
+router.put('/users/:id', async (req, res, next) => {
+  if (req.user.isAdmin) {
     let email = req.body.email
-    let imageUrl = req.body.imageUrl
     let isAdmin = req.body.isAdmin
     let user = await User.findByPk(+req.params.id)
-    user.update({name, email, imageUrl, isAdmin})
+    user.update({email, isAdmin})
   }
   res.sendStatus(201)
 })
 
-router.get('/admin/products', async (req, res, next) => {
+router.get('/products', async (req, res, next) => {
   if (req.user.isAdmin) {
     let products = await Product.findAll()
     res.json(products)
   } else res.sendStatus(401)
 })
 
+router.get('/products/:id', async (req, res, next) => {
+  if (req.user.isAdmin) {
+    let products = await Product.findByPk(req.params.id)
+    res.json(products)
+  } else res.sendStatus(401)
+})
 router.put('admin/products/:id', async (req, res, next) => {
   if (req.user.isAdmin) {
     let name = req.body.name
