@@ -20,7 +20,7 @@ form div {
   display: inline-block;
 }
 
-.navbar {
+.padded {
   display: flex;
   margin: 20px;
   padding: 20px;

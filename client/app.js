@@ -1,14 +1,15 @@
 import React from 'react'
+import {Container} from 'semantic-ui-react'
 
 import {Navbar} from './components'
 import Routes from './routes'
 
 const App = () => {
   return (
-    <div>
+    <Container>
       <Navbar />
       <Routes />
-    </div>
+    </Container>
   )
 }
 

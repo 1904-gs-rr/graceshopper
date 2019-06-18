@@ -1,15 +1,31 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {Menu, Segment} from 'semantic-ui-react'
+import {Menu, Segment, Header, Grid, Button} from 'semantic-ui-react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {logout} from '../store'
 
 const Navbar = ({handleClick, isLoggedIn}) => (
-  <div>
-    <h1 className="padded">Welcome to YourWorld</h1>
+  <div style={{height: 100}}>
+    <Grid
+      verticalAlign="middle"
+      textAlign="center"
+      style={{'padding-top': '1%'}}
+    >
+      <h1
+        as="h1"
+        textAlign="center"
+        style={{
+          'padding-top': '2%',
+          'font-family': 'Papyrus',
+          'font-size': '300%'
+        }}
+      >
+        YourWorld Industries
+      </h1>
+    </Grid>
     {isLoggedIn ? (
-      <div>
+      <Header>
         {/* The navbar will show these links after you log in */}
         <div className="ui left aligned one column grid">
           <Link className="ui button" to="/home">
@@ -18,13 +34,13 @@ const Navbar = ({handleClick, isLoggedIn}) => (
           <Link className="ui button" to="/cart">
             See Cart
           </Link>
-          <a className="ui button" href="#" onClick={handleClick}>
+          <Button className="ui button" href="#" onClick={handleClick}>
             Logout
-          </a>
+          </Button>
         </div>
-      </div>
+      </Header>
     ) : (
-      <div className="ui center aligned one column grid">
+      <Header>
         {/* The navbar will show these links before you log in */}
         <Link className="ui button" to="/login">
           Login
@@ -38,10 +54,9 @@ const Navbar = ({handleClick, isLoggedIn}) => (
         <Link className="ui button" to="/cart">
           See Cart
         </Link>
-      </div>
+      </Header>
     )}
-    <p />
-    <hr className="bloop" />
+    <hr />
   </div>
 )
 

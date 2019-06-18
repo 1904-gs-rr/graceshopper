@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 
 import {getCart, guestAdd, addingItem, editingItem} from '../store/cart'
 import {NavLink, Redirect} from 'react-router-dom'
+import {Button, Form} from 'semantic-ui-react'
 
 class Cart extends React.Component {
   constructor() {
@@ -39,7 +40,10 @@ class Cart extends React.Component {
   render() {
     return (
       <div className="ui center aligned one column grid">
-        <div className="ui center aligned one column grid">
+        <div
+          className="ui center aligned one column grid"
+          style={{'padding-top': '25%'}}
+        >
           <h1>Products in Cart:</h1>
           <div className="ui center aligned one row grid">
             {this.props.cart
@@ -64,9 +68,9 @@ class Cart extends React.Component {
                     <img src={product.imageUrl} />
                     <h3>Quantity: {product.cartQuantity} </h3>
                     <select ref={ref}>{options}</select>
-                    <button
+                    <Button
+                      size=" small"
                       type="button"
-                      className="ui button"
                       onClick={
                         this.props.user.id
                           ? () =>
@@ -82,14 +86,13 @@ class Cart extends React.Component {
                       }
                     >
                       Change Quantity
-                    </button>
+                    </Button>
                   </div>
                 )
               })}
           </div>
           <NavLink to="/checkout">To Checkout</NavLink>
         </div>
-        >>>>>>> Stashed changes
       </div>
     )
   }

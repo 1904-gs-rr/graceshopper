@@ -1,6 +1,8 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import axios from 'axios'
+import {Button, Grid} from 'semantic-ui-react'
+
 import {guestAdd, addingItem, getCart} from '../store/cart'
 
 class SingleProduct extends React.Component {
@@ -84,14 +86,14 @@ class SingleProduct extends React.Component {
       )
     }
     return (
-      <div className="ui center aligned one column grid">
-        <div className="ui center aligned one column grid">
+      <Grid centered columns={1}>
+        <Grid.Column centered textAlign="center">
           <h1>{product.name}</h1>
           <img src={product.imageUrl} />
           <h2>In stock: {product.quantity}</h2>
           <div>
-            <button
-              className="ui button"
+            <Button
+              size="large"
               type="button"
               onClick={
                 !this.props.user.id
@@ -105,7 +107,7 @@ class SingleProduct extends React.Component {
               }
             >
               Add to cart
-            </button>
+            </Button>
             <div className="ui compact menu">
               <div>
                 <select
@@ -117,8 +119,8 @@ class SingleProduct extends React.Component {
               </div>
             </div>
           </div>
-        </div>
-      </div>
+        </Grid.Column>
+      </Grid>
     )
   }
 }

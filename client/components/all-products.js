@@ -47,7 +47,10 @@ class AllProducts extends React.Component {
   }
   render() {
     return (
-      <div className="ui center aligned one column grid">
+      <div
+        className="ui center aligned one column grid"
+        style={{'padding-top': '4%'}}
+      >
         <h1 className="header item">Available Planets</h1>
         <div className="ui center aligned three column grid">
           {this.props.products.map(product => {
@@ -57,7 +60,7 @@ class AllProducts extends React.Component {
                   <h2>{product.name}</h2>
                   <img src={product.imageUrl} />
                   {/* <p>Quantity: {product.quantity}</p> */}
-                  <p>Price: $ {product.price / 100}</p>
+                  <p>Price: $ {product.price / 100.0}</p>
                   {/* <button
                 onClick={
                   !this.props.user.id
