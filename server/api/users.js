@@ -65,3 +65,20 @@ router.post('/newuser', async (req, res, next) => {
     next(error)
   }
 })
+
+/**UPDATE USER**/
+router.put('/:id', async (req, res, next) => {
+  const userId = req.params.id
+  if (req.user.id === userId || req.user.isAdmin) {
+    try {
+      const [notUseful, useful] = await User.update(req.body, {
+        where: {id: userId},
+        returning: true,
+        plain: true
+      })
+      res.status(200).send(useful)
+    } catch (error) {
+      res.sendStatus(404)
+    }
+  } else res.sendStatus(401)
+})
