@@ -155,6 +155,9 @@ router.put('/transferGuestCart', async (req, res, next) => {
         orderId: req.session.cartId,
         productId: item.id
       })
+      const product = await Product.findByPk(item.id)
+      const newQuant = product.dataValues.quantity - +item.cartQuantity
+      product.update({quantity: newQuant})
     })
     res.send('success!')
   } catch (err) {
