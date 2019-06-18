@@ -11,7 +11,7 @@ const AuthForm = props => {
   const {name, displayName, handleSubmit, error} = props
 
   return (
-    <Grid centered columns={3}>
+    <Grid centered columns={3} style={{'padding-top': '4%'}}>
       <Grid.Column centered>
         <Form onSubmit={handleSubmit} name={name}>
           <Form.Field>

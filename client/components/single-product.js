@@ -86,7 +86,10 @@ class SingleProduct extends React.Component {
       )
     }
     return (
-      <div className="ui center aligned one column grid">
+      <div
+        className="ui center aligned one column grid"
+        style={{'padding-top': '4%'}}
+      >
         <div className="ui center aligned one column grid">
           <div>
             <h1 style={{display: 'flex', justifyContent: 'space-around'}}>

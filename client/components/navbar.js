@@ -60,7 +60,8 @@ const Navbar = ({handleClick, isLoggedIn}) => (
           style={{
             'padding-top': '2%',
             'font-family': 'Papyrus',
-            'font-size': '300%'
+            'font-size': '300%',
+            'text-align': 'center'
           }}
         >
           YourWorld Industries
