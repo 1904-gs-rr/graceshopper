@@ -8,6 +8,7 @@ import {logout} from '../store'
 const Navbar = ({handleClick, isLoggedIn}) => (
   <div style={{height: 100}}>
     <Grid
+      columns={2}
       verticalAlign="middle"
       textAlign="center"
       style={{'padding-top': '1%'}}
@@ -23,39 +24,40 @@ const Navbar = ({handleClick, isLoggedIn}) => (
       >
         YourWorld Industries
       </h1>
-    </Grid>
-    {isLoggedIn ? (
-      <Header>
-        {/* The navbar will show these links after you log in */}
-        <div className="ui left aligned one column grid">
-          <Link className="ui button" to="/home">
-            Home
+
+      {isLoggedIn ? (
+        <Header>
+          {/* The navbar will show these links after you log in */}
+          <div className="ui left aligned one column grid">
+            <Link className="ui button" to="/home">
+              Home
+            </Link>
+            <Link className="ui button" to="/cart">
+              See Cart
+            </Link>
+            <Button className="ui button" href="#" onClick={handleClick}>
+              Logout
+            </Button>
+          </div>
+        </Header>
+      ) : (
+        <Header>
+          {/* The navbar will show these links before you log in */}
+          <Link className="ui button" to="/login">
+            Login
+          </Link>
+          <Link className="ui button" to="/signup">
+            Sign Up
+          </Link>
+          <Link className="ui button" to="/products">
+            See Products
           </Link>
           <Link className="ui button" to="/cart">
             See Cart
           </Link>
-          <Button className="ui button" href="#" onClick={handleClick}>
-            Logout
-          </Button>
-        </div>
-      </Header>
-    ) : (
-      <Header>
-        {/* The navbar will show these links before you log in */}
-        <Link className="ui button" to="/login">
-          Login
-        </Link>
-        <Link className="ui button" to="/signup">
-          Sign Up
-        </Link>
-        <Link className="ui button" to="/products">
-          See Products
-        </Link>
-        <Link className="ui button" to="/cart">
-          See Cart
-        </Link>
-      </Header>
-    )}
+        </Header>
+      )}
+    </Grid>
     <hr />
   </div>
 )

@@ -86,9 +86,13 @@ class SingleProduct extends React.Component {
       )
     }
     return (
-      <Grid centered columns={1}>
-        <Grid.Column centered textAlign="center">
-          <h1>{product.name}</h1>
+      <div className="ui center aligned one column grid">
+        <div className="ui center aligned one column grid">
+          <div>
+            <h1 style={{display: 'flex', justifyContent: 'space-around'}}>
+              {product.name}
+            </h1>
+          </div>
           <img src={product.imageUrl} />
           <h2>In stock: {product.quantity}</h2>
           <div>
@@ -119,8 +123,8 @@ class SingleProduct extends React.Component {
               </div>
             </div>
           </div>
-        </Grid.Column>
-      </Grid>
+        </div>
+      </div>
     )
   }
 }
