@@ -5,6 +5,7 @@ const request = require('supertest')
 const db = require('../db')
 const app = require('../index')
 const User = db.model('user')
+const Product = db.model('product')
 
 describe('Backend security', () => {
   beforeEach(() => {
@@ -12,21 +13,24 @@ describe('Backend security', () => {
   })
 
   describe('/api/users/', () => {
-    const codysEmail = 'cody@puppybook.com'
-
-    beforeEach(() => {
-      return User.create({
-        email: codysEmail
+    beforeEach(async () => {
+      const newTestPlanet = await Product.create({
+        name: 'testplanet',
+        imageUrl:
+          'https://cdn.mos.cms.futurecdn.net/uxyTQorrAz7z8KcVZzPjDe.jpg',
+        quantity: 5,
+        price: 10
       })
+      return newTestPlanet
     })
 
-    xit('GET /api/users/1', async () => {
+    it('GET /api/products/1', async () => {
       const res = await request(app)
-        .get('/api/users/1')
+        .get('/api/products/1')
         .expect(200)
 
-      expect(res.body).to.be.an('object')
-      expect(res.body.email).to.be.equal(codysEmail)
+      expect(res.status).to.equal(200)
+      expect(res.body.name).to.be.equal('testplanet')
     })
   }) // end describe('/api/users')
 }) // end describe('User routes')

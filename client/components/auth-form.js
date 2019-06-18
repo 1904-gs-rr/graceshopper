@@ -11,9 +11,7 @@ const AuthForm = props => {
   const {name, displayName, handleSubmit, error, cart} = props
 
   return (
-
     <Grid centered columns={3} style={{'padding-top': '4%'}}>
-
       <Grid.Column centered>
         <Form onSubmit={handleSubmit} name={name}>
           <Form.Field>
@@ -49,7 +47,7 @@ const AuthForm = props => {
 const mapLogin = state => {
   return {
     name: 'login',
-
+    cart: state.cart,
     displayName: 'Log In',
     error: state.user.error
   }

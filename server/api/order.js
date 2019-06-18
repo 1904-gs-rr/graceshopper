@@ -154,6 +154,7 @@ router.put('/edit', async (req, res, next) => {
 
 router.put('/transferGuestCart', async (req, res, next) => {
   try {
+    console.log('BODYBODY:', req.body)
     await req.body.forEach(async item => {
       const cartItem = await CartProduct.findOne({
         where: {
