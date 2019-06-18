@@ -3,6 +3,7 @@ const {User, Order} = require('../db/models/')
 module.exports = router
 
 router.post('/login', async (req, res, next) => {
+  console.log(req.user)
   try {
     const user = await User.findOne({where: {email: req.body.email}})
     if (!user) {
@@ -21,7 +22,7 @@ router.post('/login', async (req, res, next) => {
       console.log('CART', cart)
 
       req.session.cartId = cart.id
-      // req.session.userId = user.id
+      req.session.userId = user.id
       req.login(user, err => (err ? next(err) : res.json(user)))
     }
   } catch (err) {
@@ -32,7 +33,6 @@ router.post('/login', async (req, res, next) => {
 router.post('/signup', async (req, res, next) => {
   try {
     const user = await User.create(req.body)
-
     const cart = await Order.create({})
     await user.addOrder(cart)
     req.session.cartId = cart.id
@@ -58,5 +58,3 @@ router.get('/me', (req, res) => {
 })
 
 router.use('/google', require('./google'))
-
-//middleware for creating cartId for google signup?

@@ -16,14 +16,12 @@ router.get('/users/:id', async (req, res, next) => {
   } else res.sendStatus(401)
 })
 
-router.put('/lusers/:id', async (req, res, next) => {
+router.put('/users/:id', async (req, res, next) => {
   if (req.user.isAdmin) {
-    let name = req.body.name
     let email = req.body.email
-    let imageUrl = req.body.imageUrl
     let isAdmin = req.body.isAdmin
     let user = await User.findByPk(+req.params.id)
-    user.update({name, email, imageUrl, isAdmin})
+    user.update({email, isAdmin})
   }
   res.sendStatus(201)
 })

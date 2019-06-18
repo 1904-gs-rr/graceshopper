@@ -7,6 +7,7 @@ import {getCart} from './cart'
  */
 const GET_USER = 'GET_USER'
 const REMOVE_USER = 'REMOVE_USER'
+const UPDATE_USER = 'UPDATE_USER'
 
 /**
  * INITIAL STATE
@@ -18,7 +19,10 @@ const defaultUser = {}
  */
 const getUser = user => ({type: GET_USER, user})
 const removeUser = () => ({type: REMOVE_USER})
-
+const updateUser = updatedStudentInfo => ({
+  type: UPDATE_USER,
+  updatedStudentInfo
+})
 /**
  * THUNK CREATORS
  */
@@ -29,6 +33,11 @@ export const me = () => async dispatch => {
   } catch (err) {
     console.error(err)
   }
+}
+
+export const updateUsers = updatedUserInfo => async dispatch => {
+  await axios.put(`/api/admin/users/${userId}`, updatedUserInfo)
+  return dispatch(updateUser())
 }
 
 export const auth = (email, password, method, cart) => async dispatch => {
