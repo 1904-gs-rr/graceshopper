@@ -18,7 +18,7 @@ before_script:
 script:
   - npm test # test the code
   - npm run build-client # make the bundle
-
+bundler_args: --retry 5
 before_deploy:
   - rm -rf node_modules # omit from the tarball, since we skip cleanup
 deploy:
