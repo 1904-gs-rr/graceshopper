@@ -38,39 +38,58 @@ class Cart extends React.Component {
   }
   render() {
     return (
-      <div>
-        <h1>Products in Cart:</h1>
-        {this.props.cart.map(product => {
-          let ref = `productQuantity${product.id}`
-          let options = []
-          let selectQuantity = product.quantity > 10 ? 10 : product.quantity
-          for (let i = 0; i <= selectQuantity; i++) {
-            options.push(
-              <option key={i} value={i}>
-                {i}
-              </option>
-            )
-          }
-          return (
-            <div key={product.id}>
-              <h3>{product.name}</h3>
-              <img src={product.imageUrl} />
-              <h3>Quantity: {product.cartQuantity} </h3>
-              <select ref={ref}>{options}</select>
-              <button
-                type="button"
-                onClick={
-                  this.props.user.id
-                    ? () => this.props.userEdit(product, +this.refs[ref].value)
-                    : () => this.changeQuantity(product, +this.refs[ref].value)
+      <div className="ui center aligned one column grid">
+        <div className="ui center aligned one column grid">
+          <h1>Products in Cart:</h1>
+          <div className="ui center aligned one row grid">
+            {this.props.cart
+              .filter(item => {
+                return item.cartQuantity !== 0
+              })
+              .map(product => {
+                let ref = `productQuantity${product.id}`
+                let options = []
+                let selectQuantity =
+                  product.quantity > 10 ? 10 : product.quantity
+                for (let i = 0; i <= selectQuantity; i++) {
+                  options.push(
+                    <option key={i} value={i}>
+                      {i}
+                    </option>
+                  )
                 }
-              >
-                Change Quantity
-              </button>
-            </div>
-          )
-        })}
-        <NavLink to="/checkout">To Checkout</NavLink>
+                return (
+                  <div key={product.id}>
+                    <h3>{product.name}</h3>
+                    <img src={product.imageUrl} />
+                    <h3>Quantity: {product.cartQuantity} </h3>
+                    <select ref={ref}>{options}</select>
+                    <button
+                      type="button"
+                      className="ui button"
+                      onClick={
+                        this.props.user.id
+                          ? () =>
+                              this.props.userEdit(
+                                product,
+                                +this.refs[ref].value
+                              )
+                          : () =>
+                              this.changeQuantity(
+                                product,
+                                +this.refs[ref].value
+                              )
+                      }
+                    >
+                      Change Quantity
+                    </button>
+                  </div>
+                )
+              })}
+          </div>
+          <NavLink to="/checkout">To Checkout</NavLink>
+        </div>
+        >>>>>>> Stashed changes
       </div>
     )
   }

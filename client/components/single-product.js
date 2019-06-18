@@ -78,28 +78,46 @@ class SingleProduct extends React.Component {
     //   availableBeforeCheckout > 10 ? 10 : availableBeforeCheckout
     for (let i = 0; i <= selectQuantity; i++) {
       options.push(
-        <option key={i} value={i}>
+        <option key={i} value={i} className="dropdown-item">
           {i}
         </option>
       )
     }
     return (
-      <div>
-        <h1>{product.name}</h1>
-        <img src={product.imageUrl} />
-        <h2>In stock: {product.quantity}</h2>
-        <select ref="productQuantity">{options}</select>
-        <button
-          type="button"
-          onClick={
-            !this.props.user.id
-              ? () => this.addToCart(product, +this.refs.productQuantity.value)
-              : () =>
-                  this.props.userAdd(product, +this.refs.productQuantity.value)
-          }
-        >
-          Add to cart
-        </button>
+      <div className="ui center aligned one column grid">
+        <div className="ui center aligned one column grid">
+          <h1>{product.name}</h1>
+          <img src={product.imageUrl} />
+          <h2>In stock: {product.quantity}</h2>
+          <div>
+            <button
+              className="ui button"
+              type="button"
+              onClick={
+                !this.props.user.id
+                  ? () =>
+                      this.addToCart(product, +this.refs.productQuantity.value)
+                  : () =>
+                      this.props.userAdd(
+                        product,
+                        +this.refs.productQuantity.value
+                      )
+              }
+            >
+              Add to cart
+            </button>
+            <div className="ui compact menu">
+              <div>
+                <select
+                  className="ui item simple dropdown"
+                  ref="productQuantity"
+                >
+                  {options}
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     )
   }
