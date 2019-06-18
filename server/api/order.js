@@ -3,6 +3,12 @@ const {Order, Product, CartProduct} = require('../db/models/')
 module.exports = router
 
 router.get('/', async (req, res, next) => {
+  if (req.user.googleId) {
+    let cartId = await Order.max('id')
+    req.session.cartId = cartId
+    console.log(req.session)
+  }
+
   try {
     if (req.session.cartId) {
       const cart = await Order.findByPk(req.session.cartId)
