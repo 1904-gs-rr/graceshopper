@@ -1,6 +1,8 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import axios from 'axios'
+import {Button, Grid} from 'semantic-ui-react'
+
 import {guestAdd, addingItem, getCart} from '../store/cart'
 import {addingGuestDB, getProducts} from '../store/products'
 
@@ -80,12 +82,13 @@ class SingleProduct extends React.Component {
     //   availableBeforeCheckout > 10 ? 10 : availableBeforeCheckout
     for (let i = 0; i <= selectQuantity; i++) {
       options.push(
-        <option key={i} value={i}>
+        <option key={i} value={i} className="dropdown-item">
           {i}
         </option>
       )
     }
     return (
+
       <div>
         <h1>{product.name}</h1>
         <img src={product.imageUrl} />
@@ -102,6 +105,7 @@ class SingleProduct extends React.Component {
         >
           Add to cart
         </button>
+
       </div>
     )
   }

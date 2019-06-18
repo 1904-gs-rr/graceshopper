@@ -19,9 +19,9 @@ const defaultUser = {}
  */
 const getUser = user => ({type: GET_USER, user})
 const removeUser = () => ({type: REMOVE_USER})
-const updateUser = updatedStudentInfo => ({
+const updateUser = user => ({
   type: UPDATE_USER,
-  updatedStudentInfo
+  user
 })
 /**
  * THUNK CREATORS
@@ -35,9 +35,9 @@ export const me = () => async dispatch => {
   }
 }
 
-export const updateUsers = updatedUserInfo => async dispatch => {
-  await axios.put(`/api/admin/users/${userId}`, updatedUserInfo)
-  return dispatch(updateUser())
+export const updateUsers = (user, userId) => async dispatch => {
+  await axios.put(`/api/users/${userId}`, user)
+  return dispatch(updateUser(user))
 }
 
 export const auth = (email, password, method, cart) => async dispatch => {
@@ -77,6 +77,8 @@ export default function(state = defaultUser, action) {
       return action.user
     case REMOVE_USER:
       return defaultUser
+    case UPDATE_USER:
+      return action.user
     default:
       return state
   }

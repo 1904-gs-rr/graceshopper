@@ -2,7 +2,9 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {editProduct, getProducts, guestEdit} from '../store/products'
 import {getCart, guestAdd, addingItem, editingItem} from '../store/cart'
-import {NavLink} from 'react-router-dom'
+
+import {NavLink, Redirect} from 'react-router-dom'
+import {Button, Form, Grid} from 'semantic-ui-react'
 
 class Cart extends React.Component {
   constructor() {
@@ -50,6 +52,7 @@ class Cart extends React.Component {
 
   render() {
     return (
+
       <div>
         <h1>Products in Cart:</h1>
         {this.props.cart.map(product => {
@@ -87,6 +90,7 @@ class Cart extends React.Component {
             </div>
           )
         })}
+
         <NavLink to="/checkout">To Checkout</NavLink>
       </div>
     )

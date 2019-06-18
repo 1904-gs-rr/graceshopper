@@ -4,7 +4,7 @@ import {getCart, guestAdd} from '../store/cart'
 import {NavLink} from 'react-router-dom'
 import Axios from 'axios'
 import history from '../history'
-
+import StripeCheckout from 'react-stripe-checkout'
 class Checkout extends React.Component {
   constructor() {
     super()
@@ -24,9 +24,24 @@ class Checkout extends React.Component {
   submitGuestOrder() {
     localStorage.removeItem('cart')
   }
+  async onToken(token) {
+    const body = {
+      amount: 999,
+      token: token
+    }
 
+    try {
+      await Axios.post('/api/payment', body)
+      alert('success')
+      await Axios.put('/api/checkout')
+      history.push('/thanks')
+    } catch (error) {
+      alert('payment failure')
+    }
+  }
   render() {
     return (
+
       <div>
         <h1>Products in Cart:</h1>
         {this.props.cart.map(product => {
@@ -39,6 +54,13 @@ class Checkout extends React.Component {
           )
         })}
         <button onClick={this.submitOrder}>Submit Order</button>
+        <StripeCheckout
+          name="test"
+          token={this.onToken}
+          amount={100}
+          stripeKey="pk_test_lUoCpN1soU0i1I1tV7QzSHRb0065Cz2rxj"
+        />
+
       </div>
     )
   }

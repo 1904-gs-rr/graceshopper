@@ -19,3 +19,9 @@ form div {
   margin: 1em;
   display: inline-block;
 }
+
+.padded {
+  display: flex;
+  margin: 20px;
+  padding: 20px;
+}
