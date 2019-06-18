@@ -6,7 +6,6 @@ router.get('/', async (req, res, next) => {
   try {
     if (req.session.cartId) {
       const cart = await Order.findByPk(req.session.cartId)
-
       const products = await cart.getProducts()
       let cartQuantProducts = await products.map(async product => {
         const cartQuantItem = await CartProduct.findOne({

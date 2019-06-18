@@ -35,7 +35,6 @@ class Cart extends React.Component {
       }
       this.props.guestAdd(cart)
     }
-    this.props.getProducts()
   }
 
   componentDidUpdate(prevProps) {
@@ -102,8 +101,7 @@ class Cart extends React.Component {
 const mapStateToProps = state => {
   return {
     user: state.user,
-    cart: state.cart,
-    products: state.products
+    cart: state.cart
   }
 }
 const mapDispatchToProps = dispatch => {
