@@ -85,7 +85,7 @@ class SingleProduct extends React.Component {
       <div>
         <h1>{product.name}</h1>
         <img src={product.imageUrl} />
-        <h2>In stock: {product.quantity}</h2>
+        <h2>In stock: {selectQuantity}</h2>
         <select ref="productQuantity">{options}</select>
         <button
           type="button"

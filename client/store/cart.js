@@ -86,6 +86,10 @@ export default function(state = defaultCart, action) {
     case EDIT_ITEM:
       state.forEach((item, idx) => {
         if (item.id === action.item.id) {
+          let oldQuant = item.cartQuantity
+          let newQuant = action.quantity
+          let diff = oldQuant - newQuant
+          item.quantity = item.quantity + diff
           state[idx] = action.item
           state[idx].cartQuantity = action.quantity
         }
