@@ -5,6 +5,7 @@ import history from '../history'
  * ACTION TYPES
  */
 const GOT_PRODUCTS = 'GET_PRODUCTS'
+const EDIT_PRODUCT = 'EDIT_PRODUCT'
 
 /**
  * INITIAL STATE
@@ -15,6 +16,13 @@ const defaultProducts = []
  * ACTION CREATORS
  */
 const gotProducts = products => ({type: GOT_PRODUCTS, products})
+export const editProduct = (product, quantity) => {
+  return {
+    type: EDIT_PRODUCT,
+    product,
+    quantity
+  }
+}
 
 /**
  * THUNK CREATORS

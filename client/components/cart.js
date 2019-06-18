@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-
+import {editProduct, getProducts} from '../store/products'
 import {getCart, guestAdd, addingItem, editingItem} from '../store/cart'
 import {NavLink, Redirect} from 'react-router-dom'
 
@@ -8,7 +8,7 @@ class Cart extends React.Component {
   constructor() {
     super()
   }
-  changeQuantity(prod, ref) {
+  changeQuantityGuest(prod, ref) {
     let cart = JSON.parse(localStorage.getItem('cart'))
     cart.forEach(el => {
       if (el.id === prod.id) {
@@ -21,6 +21,9 @@ class Cart extends React.Component {
     localStorage.setItem('cart', JSON.stringify(newCart))
     this.props.guestAdd(newCart)
   }
+  changeQuantityUser(product, ref) {
+    this.props.userEdit(product, ref)
+  }
 
   componentDidMount() {
     if (this.props.user.id) {
@@ -32,6 +35,7 @@ class Cart extends React.Component {
       }
       this.props.guestAdd(cart)
     }
+    this.props.getProducts()
   }
 
   componentDidUpdate(prevProps) {
@@ -48,9 +52,14 @@ class Cart extends React.Component {
             return item.cartQuantity !== 0
           })
           .map(product => {
+            console.log('quantity', product.quantity)
+            console.log('cartquantity', product.cartQuantity)
             let ref = `productQuantity${product.id}`
             let options = []
-            let selectQuantity = product.quantity > 10 ? 10 : product.quantity
+            let selectQuantity =
+              product.quantity > 10
+                ? 10
+                : product.quantity + product.cartQuantity
             for (let i = 0; i <= selectQuantity; i++) {
               options.push(
                 <option key={i} value={i}>
@@ -69,9 +78,15 @@ class Cart extends React.Component {
                   onClick={
                     this.props.user.id
                       ? () =>
-                          this.props.userEdit(product, +this.refs[ref].value)
+                          this.changeQuantityUser(
+                            product,
+                            +this.refs[ref].value
+                          )
                       : () =>
-                          this.changeQuantity(product, +this.refs[ref].value)
+                          this.changeQuantityGuest(
+                            product,
+                            +this.refs[ref].value
+                          )
                   }
                 >
                   Change Quantity
@@ -87,7 +102,8 @@ class Cart extends React.Component {
 const mapStateToProps = state => {
   return {
     user: state.user,
-    cart: state.cart
+    cart: state.cart,
+    products: state.products
   }
 }
 const mapDispatchToProps = dispatch => {
@@ -103,6 +119,9 @@ const mapDispatchToProps = dispatch => {
     },
     userEdit: (item, quantity) => {
       return dispatch(editingItem(item, quantity))
+    },
+    getProducts: () => {
+      return dispatch(getProducts())
     }
   }
 }
