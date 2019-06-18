@@ -41,6 +41,7 @@ class Checkout extends React.Component {
   }
   render() {
     return (
+
       <div>
         <h1>Products in Cart:</h1>
         {this.props.cart.map(product => {
@@ -59,6 +60,7 @@ class Checkout extends React.Component {
           amount={100}
           stripeKey="pk_test_lUoCpN1soU0i1I1tV7QzSHRb0065Cz2rxj"
         />
+
       </div>
     )
   }
