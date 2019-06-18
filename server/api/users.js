@@ -59,8 +59,30 @@ router.post('/newuser', async (req, res, next) => {
     })
     const cart = await Order.create({})
     await createUser.addOrder(cart)
-    console.log(cart)
     res.status(200).send('User created!')
+  } catch (error) {
+    next(error)
+  }
+})
+
+/**EDIT USER PROFILE**/
+
+router.put('/edituser', async (req, res, next) => {
+  try {
+    const {id, firstName, lastName, email, password} = req.body
+
+    const [useless, editedUser] = await User.update({
+      firstName,
+      lastName,
+      email,
+      password,
+      where: {
+        id: id,
+        returning: true
+      }
+    })
+    console.log('USERERERE', editedUser)
+    res.status(200).send(editedUser)
   } catch (error) {
     next(error)
   }

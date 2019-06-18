@@ -7,6 +7,7 @@ import {getCart} from './cart'
  */
 const GET_USER = 'GET_USER'
 const REMOVE_USER = 'REMOVE_USER'
+const EDIT_USER = 'EDIT_USER'
 
 /**
  * INITIAL STATE
@@ -18,6 +19,7 @@ const defaultUser = {}
  */
 const getUser = user => ({type: GET_USER, user})
 const removeUser = () => ({type: REMOVE_USER})
+const editUser = updatedUser => ({type: EDIT_USER, updatedUser})
 
 /**
  * THUNK CREATORS
@@ -52,10 +54,31 @@ export const logout = () => async dispatch => {
   try {
     await axios.post('/auth/logout')
     dispatch(removeUser())
-    // dispatch(getCart({}))
     history.push('/login')
   } catch (err) {
     console.error(err)
+  }
+}
+
+export const editUserThunk = (
+  id,
+  firstName,
+  lastName,
+  email,
+  password
+) => async dispatch => {
+  try {
+    const {data} = await axios.put('/edituser', {
+      id,
+      firstName,
+      lastName,
+      email,
+      password
+    })
+    console.log('DATAATATAT', data)
+    dispatch(editUser(data))
+  } catch (error) {
+    console.log(error)
   }
 }
 
@@ -68,6 +91,8 @@ export default function(state = defaultUser, action) {
       return action.user
     case REMOVE_USER:
       return defaultUser
+    case EDIT_USER:
+      return action.updatedUser
     default:
       return state
   }
