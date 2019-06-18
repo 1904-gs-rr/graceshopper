@@ -2,35 +2,46 @@ const router = require('express').Router()
 const {User, Order} = require('../db/models/')
 module.exports = router
 
-/*GET SINGLE USER BY ID*/
 router.get('/', async (req, res, next) => {
-  try {
-    const users = await User.findAll({
-      // explicitly select only the id and email fields - even though
-      // users' passwords are encrypted, it won't help if we just
-      // send everything to anyone who asks!
-      attributes: ['id', 'email']
-    })
-    res.json(users)
-  } catch (err) {
-    next(err)
-  }
+  console.log(req.user)
+  if (req.user.isAdmin) {
+    let response = await User.findAll()
+    res.json(response)
+  } else res.sendStatus(401)
 })
 
+/*GET SINGLE USER BY ID*/
 router.get('/:id', async (req, res, next) => {
-  try {
+  //because of passport, every user is included in req requests in all routes:
+  // if (req.session.userId === +req.params.id)
+  if (req.user.isAdmin) {
     const user = await User.findOne({
       where: {
         id: req.params.id
       }
     })
-    if (!user) {
-      res.status(404).send()
-    } else {
-      res.json(user)
+    res.json(user)
+  }
+
+  if (req.user.id === +req.params.id)
+    try {
+      {
+        const user = await User.findOne({
+          where: {
+            id: req.params.id
+          }
+        })
+        if (!user) {
+          res.status(404).send()
+        } else {
+          res.json(user)
+        }
+      }
+    } catch (error) {
+      next(error)
     }
-  } catch (error) {
-    next(error)
+  else {
+    res.sendStatus(401)
   }
 })
 

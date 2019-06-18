@@ -65,10 +65,8 @@ class SingleProduct extends React.Component {
       let [cartItem] = this.props.cart.filter(item => {
         return product.name === item.name
       })
-      console.log(cartItem)
       if (cartItem) {
         availableBeforeCheckout = +cartItem.quantity - +cartItem.cartQuantity
-        console.log(typeof cartItem.quantity, typeof cartItem.cartQuantity)
       }
     }
 

@@ -2,6 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 
 import {getCart, guestAdd, addingItem, editingItem} from '../store/cart'
+
 import {NavLink, Redirect} from 'react-router-dom'
 import {Button, Form, Grid} from 'semantic-ui-react'
 
@@ -16,8 +17,11 @@ class Cart extends React.Component {
         el.cartQuantity = ref
       }
     })
-    localStorage.setItem('cart', JSON.stringify(cart))
-    this.props.guestAdd(cart)
+    let newCart = cart.filter(item => {
+      return item.cartQuantity !== 0
+    })
+    localStorage.setItem('cart', JSON.stringify(newCart))
+    this.props.guestAdd(newCart)
   }
 
   componentDidMount() {
@@ -37,8 +41,10 @@ class Cart extends React.Component {
       this.props.getCart()
     }
   }
+
   render() {
     return (
+
       <div className="ui center aligned one column grid">
         <h1 style={{'padding-top': '1%'}}>Products in Cart:</h1>
         <div className="ui center aligned three column grid">
@@ -80,6 +86,7 @@ class Cart extends React.Component {
               )
             })}
         </div>
+
         <NavLink to="/checkout">To Checkout</NavLink>
       </div>
     )

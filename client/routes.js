@@ -2,11 +2,24 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {withRouter, Route, Switch, Redirect} from 'react-router-dom'
 import PropTypes from 'prop-types'
-import {Login, Signup, UserHome, AllProducts} from './components'
+import {
+  Login,
+  Signup,
+  UserHome,
+  AllProducts,
+  Orders,
+  OrderDetails
+} from './components'
 import {me} from './store'
 import SingleProduct from './components/single-product'
 import Cart from './components/cart'
 import Checkout from './components/checkout'
+import {UponSubmission} from './components/upon-submission'
+import {UponGuestSubmission} from './components/upon-guest-submission'
+import Admin from './components/admin'
+import AdminProducts from './components/adminProducts'
+import AdminUsers from './components/adminUsers'
+
 /**
  * COMPONENT
  */
@@ -26,15 +39,28 @@ class Routes extends Component {
         <Route exact path="/products" component={AllProducts} />
         <Route path="/products/:id" component={SingleProduct} />
         <Route path="/cart" component={Cart} />
+        <Route path="/thanks" component={UponSubmission} />
         <Route path="/checkout" component={Checkout} />
+        <Route exact path="/admin" component={Admin} />
+        <Route exact path="/admin/users" component={AdminUsers} />
+        <Route exact path="/admin/users/:id" component={AdminUsers} />
+        <Route exact path="/admin/products" component={AdminProducts} />
+
+        <Route path="/guestcheckout" component={UponGuestSubmission} />
         {isLoggedIn && (
           <Switch>
             {/* Routes placed here are only available after logging in */}
-            <Route path="/home" component={UserHome} />
+            <Route exact path="/home" component={UserHome} />
+            <Route exact path="/orders/history" component={Orders} />
+            <Route
+              exact
+              path="/orders/history/:orderId"
+              component={OrderDetails}
+            />
           </Switch>
         )}
         {/* Displays our Login component as a fallback */}
-        <Redirect to="/products" />
+        <Redirect to="/login" />
       </Switch>
     )
   }

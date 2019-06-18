@@ -15,6 +15,7 @@ const Navbar = ({handleClick, isLoggedIn}) => (
       style={{'padding-top': '1%'}}
     >
       {isLoggedIn ? (
+
         <Grid.Column style={{'padding-left': '4%'}}>
           <Header>
             {/* The navbar will show these links after you log in */}
@@ -34,6 +35,7 @@ const Navbar = ({handleClick, isLoggedIn}) => (
             </div>
           </Header>
         </Grid.Column>
+
       ) : (
         <Grid.Column>
           <Header>
@@ -84,6 +86,7 @@ const mapState = state => {
 const mapDispatch = dispatch => {
   return {
     handleClick() {
+      localStorage.setItem('cart', '[]')
       dispatch(logout())
     }
   }
