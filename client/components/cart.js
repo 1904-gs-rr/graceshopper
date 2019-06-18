@@ -45,7 +45,7 @@ class Cart extends React.Component {
   render() {
     return (
       <div className="ui center aligned one column grid">
-        <h1 style={{'padding-top': '1%'}}>Products in Cart:</h1>
+        <h1 style={{'padding-top': '4%'}}>Products in Cart:</h1>
         <div className="ui center aligned three column grid">
           {this.props.cart
             .filter(item => {
