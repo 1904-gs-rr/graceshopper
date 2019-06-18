@@ -16,9 +16,10 @@ import Cart from './components/cart'
 import Checkout from './components/checkout'
 import {UponSubmission} from './components/upon-submission'
 import {UponGuestSubmission} from './components/upon-guest-submission'
-import Admin from './components/admin'
-import AdminProducts from './components/adminProducts'
-import AdminUsers from './components/adminUsers'
+import {UserUpdateForm} from './components/'
+// import Admin from './components/admin'
+// import AdminProducts from './components/adminProducts'
+// import AdminUsers from './components/adminUsers'
 
 /**
  * COMPONENT
@@ -41,10 +42,7 @@ class Routes extends Component {
         <Route path="/cart" component={Cart} />
         <Route path="/thanks" component={UponSubmission} />
         <Route path="/checkout" component={Checkout} />
-        <Route exact path="/admin" component={Admin} />
-        <Route exact path="/admin/users" component={AdminUsers} />
-        <Route exact path="/admin/users/:id" component={AdminUsers} />
-        <Route exact path="/admin/products" component={AdminProducts} />
+        <Route exact path="/update/:id" component={UserUpdateForm} />
 
         <Route path="/guestcheckout" component={UponGuestSubmission} />
         {isLoggedIn && (
@@ -60,7 +58,7 @@ class Routes extends Component {
           </Switch>
         )}
         {/* Displays our Login component as a fallback */}
-        <Redirect to="/login" />
+        <Redirect to="/products" />
       </Switch>
     )
   }
