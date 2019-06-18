@@ -8,7 +8,7 @@ import {auth} from '../store'
  * COMPONENT
  */
 const AuthForm = props => {
-  const {name, displayName, handleSubmit, error} = props
+  const {name, displayName, handleSubmit, error, cart} = props
 
   return (
     <Grid centered columns={3} style={{'padding-top': '4%'}}>
@@ -47,6 +47,7 @@ const AuthForm = props => {
 const mapLogin = state => {
   return {
     name: 'login',
+
     displayName: 'Log In',
     error: state.user.error
   }
@@ -56,18 +57,19 @@ const mapSignup = state => {
   return {
     name: 'signup',
     displayName: 'Sign Up',
-    error: state.user.error
+    error: state.user.error,
+    cart: state.cart
   }
 }
 
 const mapDispatch = dispatch => {
   return {
-    handleSubmit(evt) {
-      evt.preventDefault()
-      const formName = evt.target.name
-      const email = evt.target.email.value
-      const password = evt.target.password.value
-      dispatch(auth(email, password, formName))
+    handleSubmit(event, cart) {
+      event.preventDefault()
+      const formName = event.target.name
+      const email = event.target.email.value
+      const password = event.target.password.value
+      dispatch(auth(email, password, formName, cart))
     }
   }
 }

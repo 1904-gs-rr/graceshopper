@@ -85,6 +85,7 @@ const mapState = state => {
 const mapDispatch = dispatch => {
   return {
     handleClick() {
+      localStorage.setItem('cart', '[]')
       dispatch(logout())
     }
   }

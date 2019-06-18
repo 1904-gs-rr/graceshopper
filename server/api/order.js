@@ -3,6 +3,12 @@ const {Order, Product, CartProduct} = require('../db/models/')
 module.exports = router
 
 router.get('/', async (req, res, next) => {
+  if (req.user.googleId) {
+    let cartId = await Order.max('id')
+    req.session.cartId = cartId
+    console.log(req.session)
+  }
+
   try {
     if (req.session.cartId) {
       const cart = await Order.findByPk(req.session.cartId)
@@ -37,6 +43,34 @@ router.get('/', async (req, res, next) => {
     }
   } catch (err) {
     next(err)
+  }
+})
+
+router.get('/history', async (req, res, next) => {
+  try {
+    const orders = await Order.findAll({
+      where: {userId: req.user.id, status: true}
+    })
+
+    res.send(orders)
+    // res.send(submittedOrders)
+  } catch (error) {
+    next(error)
+  }
+})
+
+router.get('/history/:orderId', async (req, res, next) => {
+  try {
+    const orderDetails = await CartProduct.findAll({
+      where: {orderId: req.params.orderId}
+    })
+    const products = await Promise.all(
+      orderDetails.map(order => Product.findByPk(order.productId))
+    )
+    res.send(products)
+    // res.send(submittedOrders)
+  } catch (error) {
+    next(error)
   }
 })
 
@@ -78,7 +112,10 @@ router.put('/edit', async (req, res, next) => {
     await productFromCart.update({
       cartQuantity: +req.body.quantity
     })
-    console.log(+req.body.quantity)
+
+    if (productFromCart.cartQuantity === 0) {
+      await productFromCart.destroy()
+    }
 
     res.send('success!')
     // } else {
@@ -94,6 +131,21 @@ router.put('/edit', async (req, res, next) => {
     // })
     // res.send('success!')
     // }
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.put('/transferGuestCart', async (req, res, next) => {
+  try {
+    await req.body.forEach(async item => {
+      await CartProduct.create({
+        cartQuantity: item.cartQuantity,
+        orderId: req.session.cartId,
+        productId: item.id
+      })
+    })
+    res.send('success!')
   } catch (err) {
     next(err)
   }

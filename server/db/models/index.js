@@ -3,8 +3,9 @@ const Product = require('./product')
 const Order = require('./order')
 const db = require('../db')
 const Sequelize = require('sequelize')
+
 User.hasMany(Order)
-// Order.hasOne(User)
+Order.belongsTo(User)
 const CartProduct = db.define('cart_product', {
   cartQuantity: {
     type: Sequelize.INTEGER,

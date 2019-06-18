@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import {getCart, guestAdd} from '../store/cart'
 import {NavLink} from 'react-router-dom'
 import Axios from 'axios'
+import history from '../history'
 
 class Checkout extends React.Component {
   constructor() {
@@ -12,7 +13,12 @@ class Checkout extends React.Component {
     this.props.getCart()
   }
   async submitOrder() {
-    await Axios.put('/api/checkout')
+    try {
+      await Axios.put('/api/checkout')
+      history.push('/thanks')
+    } catch (err) {
+      history.push('/guestcheckout')
+    }
   }
 
   submitGuestOrder() {
@@ -20,7 +26,6 @@ class Checkout extends React.Component {
   }
 
   render() {
-    console.log(this.props.cart)
     return (
       <div
         className="ui center aligned one column grid"
