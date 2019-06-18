@@ -1,34 +1,73 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import {Menu, Segment, Header, Grid, Button} from 'semantic-ui-react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {logout} from '../store'
 
 const Navbar = ({handleClick, isLoggedIn}) => (
-  <div>
-    <h1>Grace Shopper</h1>
-    <nav>
+  <div style={{height: 100}}>
+    <Grid
+      centered
+      columns={3}
+      verticalAlign="middle"
+      // textAlign="center"
+      style={{'padding-top': '1%'}}
+    >
       {isLoggedIn ? (
-        <div>
-          {/* The navbar will show these links after you log in */}
-          <Link to="/home">Home</Link>
-          <Link to="/cart">See Cart</Link>
-          <Link to="/orders/history">Orders</Link>
-
-          <a href="#" onClick={handleClick}>
-            Logout
-          </a>
-        </div>
+        <Grid.Column style={{'padding-left': '4%'}}>
+          <Header>
+            {/* The navbar will show these links after you log in */}
+            <div
+              className="ui left aligned one column grid"
+              style={{'padding-top': '5%'}}
+            >
+              <Link className="ui button" to="/home">
+                Home
+              </Link>
+              <Link className="ui button" to="/cart">
+                See Cart
+              </Link>
+              <Button className="ui button" href="#" onClick={handleClick}>
+                Logout
+              </Button>
+            </div>
+          </Header>
+        </Grid.Column>
       ) : (
-        <div>
-          {/* The navbar will show these links before you log in */}
-          <Link to="/login">Login</Link>
-          <Link to="/signup">Sign Up</Link>
-          <Link to="/products">See Products</Link>
-          <Link to="/cart">See Cart</Link>
-        </div>
+        <Grid.Column>
+          <Header>
+            {/* The navbar will show these links before you log in */}
+            <Link className="ui button" to="/login">
+              Login
+            </Link>
+            <Link className="ui button" to="/signup">
+              Sign Up
+            </Link>
+            <Link className="ui button" to="/products">
+              See Products
+            </Link>
+            <Link className="ui button" to="/cart">
+              See Cart
+            </Link>
+          </Header>
+        </Grid.Column>
       )}
-    </nav>
+      <Grid.Column>
+        <h1
+          as="h1"
+          textAlign="center"
+          style={{
+            'padding-top': '2%',
+            'font-family': 'Papyrus',
+            'font-size': '300%'
+          }}
+        >
+          YourWorld Industries
+        </h1>
+      </Grid.Column>
+      <Grid.Column />
+    </Grid>
     <hr />
   </div>
 )

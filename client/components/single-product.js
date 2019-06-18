@@ -1,6 +1,8 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import axios from 'axios'
+import {Button, Grid} from 'semantic-ui-react'
+
 import {guestAdd, addingItem, getCart} from '../store/cart'
 
 class SingleProduct extends React.Component {
@@ -76,28 +78,50 @@ class SingleProduct extends React.Component {
     //   availableBeforeCheckout > 10 ? 10 : availableBeforeCheckout
     for (let i = 0; i <= selectQuantity; i++) {
       options.push(
-        <option key={i} value={i}>
+        <option key={i} value={i} className="dropdown-item">
           {i}
         </option>
       )
     }
     return (
-      <div>
-        <h1>{product.name}</h1>
-        <img src={product.imageUrl} />
-        <h2>In stock: {product.quantity}</h2>
-        <select ref="productQuantity">{options}</select>
-        <button
-          type="button"
-          onClick={
-            !this.props.user.id
-              ? () => this.addToCart(product, +this.refs.productQuantity.value)
-              : () =>
-                  this.props.userAdd(product, +this.refs.productQuantity.value)
-          }
-        >
-          Add to cart
-        </button>
+      <div className="ui center aligned one column grid">
+        <div className="ui center aligned one column grid">
+          <div>
+            <h1 style={{display: 'flex', justifyContent: 'space-around'}}>
+              {product.name}
+            </h1>
+          </div>
+          <img src={product.imageUrl} />
+          <h2>In stock: {product.quantity}</h2>
+          <div>
+            <Button
+              size="large"
+              type="button"
+              onClick={
+                !this.props.user.id
+                  ? () =>
+                      this.addToCart(product, +this.refs.productQuantity.value)
+                  : () =>
+                      this.props.userAdd(
+                        product,
+                        +this.refs.productQuantity.value
+                      )
+              }
+            >
+              Add to cart
+            </Button>
+            <div className="ui compact menu">
+              <div>
+                <select
+                  className="ui item simple dropdown"
+                  ref="productQuantity"
+                >
+                  {options}
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     )
   }

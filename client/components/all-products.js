@@ -47,18 +47,21 @@ class AllProducts extends React.Component {
   }
   render() {
     return (
-      <div>
-        <h1>All Products</h1>
-        {this.props.products.map(product => {
-          return (
-            <div key={product.id}>
-              <NavLink to={`/products/${product.id}`}>
-                <h2>{product.name}</h2>
-              </NavLink>
-              <img src={product.imageUrl} />
-              {/* <p>Quantity: {product.quantity}</p> */}
-              <p>Price: $ {product.price / 100}</p>
-              {/* <button
+      <div
+        className="ui center aligned one column grid"
+        style={{'padding-top': '4%'}}
+      >
+        <h1 className="header item">Available Planets</h1>
+        <div className="ui center aligned three column grid">
+          {this.props.products.map(product => {
+            return (
+              <div key={product.id} className="column">
+                <NavLink to={`/products/${product.id}`}>
+                  <h2>{product.name}</h2>
+                  <img src={product.imageUrl} />
+                  {/* <p>Quantity: {product.quantity}</p> */}
+                  <p>Price: $ {product.price / 100.0}</p>
+                  {/* <button
                 onClick={
                   !this.props.user.id
                     ? () => this.addToCart(product)
@@ -67,9 +70,11 @@ class AllProducts extends React.Component {
               >
                 Add to cart
               </button> */}
-            </div>
-          )
-        })}
+                </NavLink>
+              </div>
+            )
+          })}
+        </div>
       </div>
     )
   }
