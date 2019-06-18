@@ -28,12 +28,13 @@ router.put('/lusers/:id', async (req, res, next) => {
   res.sendStatus(201)
 })
 
-router.get('/admin/products', async (req, res, next) => {
+router.get('/products', async (req, res, next) => {
   if (req.user.isAdmin) {
     let products = await Product.findAll()
     res.json(products)
   } else res.sendStatus(401)
 })
+
 router.get('/products/:id', async (req, res, next) => {
   if (req.user.isAdmin) {
     let products = await Product.findByPk(req.params.id)

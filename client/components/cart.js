@@ -39,6 +39,7 @@ class Cart extends React.Component {
       this.props.getCart()
     }
   }
+
   render() {
     return (
       <div>
