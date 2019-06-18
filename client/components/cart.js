@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {editProduct, getProducts} from '../store/products'
+import {editProduct, getProducts, guestEdit} from '../store/products'
 import {getCart, guestAdd, addingItem, editingItem} from '../store/cart'
 import {NavLink} from 'react-router-dom'
 
@@ -20,6 +20,7 @@ class Cart extends React.Component {
     })
     localStorage.setItem('cart', JSON.stringify(newCart))
     this.props.guestAdd(newCart)
+    this.props.guestEdit(prod, ref)
   }
   changeQuantityUser(product, ref) {
     this.props.userEdit(product, ref)
@@ -121,6 +122,9 @@ const mapDispatchToProps = dispatch => {
     },
     getProducts: () => {
       return dispatch(getProducts())
+    },
+    guestEdit: (prod, value) => {
+      return dispatch(guestEdit(prod, value))
     }
   }
 }

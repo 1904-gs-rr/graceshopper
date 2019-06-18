@@ -172,9 +172,20 @@ router.put('/transferGuestCart', async (req, res, next) => {
 
 router.put('/addGuest', async (req, res, next) => {
   try {
-    console.log('hi')
     const product = await Product.findByPk(req.body.prod.id)
     const newQuant = product.quantity - req.body.value
+    product.update({quantity: newQuant})
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.put('/guestEdit', async (req, res, next) => {
+  try {
+    console.log('IN GUESTEDIT ROUTE')
+    const product = await Product.findByPk(req.body.prod.id)
+    const diff = req.body.prod.cartQuantity - req.body.value
+    const newQuant = product.quantity + diff
     product.update({quantity: newQuant})
   } catch (err) {
     next(err)

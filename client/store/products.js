@@ -50,6 +50,17 @@ export const addingGuestDB = (prod, value) => {
   }
 }
 
+export const guestEdit = (prod, value) => {
+  return async dispatch => {
+    try {
+      await axios.put('/api/cart/guestEdit', {prod, value})
+      dispatch(getProducts())
+    } catch (err) {
+      console.error(err)
+    }
+  }
+}
+
 /**
  * REDUCER
  */
