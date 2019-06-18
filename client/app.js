@@ -6,10 +6,12 @@ import Routes from './routes'
 
 const App = () => {
   return (
-    <Container>
+    // <Container>
+    <div>
       <Navbar />
       <Routes />
-    </Container>
+    </div>
+    // </Container>
   )
 }
 

@@ -13,7 +13,7 @@ export const UserHome = props => {
   return (
     <div>
       <AllProducts />
-      <h3>
+      <h3 style={{'padding-left': '1%'}}>
         Welcome, {email} {firstName} {lastName}
       </h3>
     </div>

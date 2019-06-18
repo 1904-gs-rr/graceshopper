@@ -8,55 +8,65 @@ import {logout} from '../store'
 const Navbar = ({handleClick, isLoggedIn}) => (
   <div style={{height: 100}}>
     <Grid
-      columns={2}
+      centered
+      columns={3}
       verticalAlign="middle"
-      textAlign="center"
+      // textAlign="center"
       style={{'padding-top': '1%'}}
     >
-      <h1
-        as="h1"
-        textAlign="center"
-        style={{
-          'padding-top': '2%',
-          'font-family': 'Papyrus',
-          'font-size': '300%'
-        }}
-      >
-        YourWorld Industries
-      </h1>
-
       {isLoggedIn ? (
-        <Header>
-          {/* The navbar will show these links after you log in */}
-          <div className="ui left aligned one column grid">
-            <Link className="ui button" to="/home">
-              Home
+        <Grid.Column style={{'padding-left': '4%'}}>
+          <Header>
+            {/* The navbar will show these links after you log in */}
+            <div
+              className="ui left aligned one column grid"
+              style={{'padding-top': '5%'}}
+            >
+              <Link className="ui button" to="/home">
+                Home
+              </Link>
+              <Link className="ui button" to="/cart">
+                See Cart
+              </Link>
+              <Button className="ui button" href="#" onClick={handleClick}>
+                Logout
+              </Button>
+            </div>
+          </Header>
+        </Grid.Column>
+      ) : (
+        <Grid.Column>
+          <Header>
+            {/* The navbar will show these links before you log in */}
+            <Link className="ui button" to="/login">
+              Login
+            </Link>
+            <Link className="ui button" to="/signup">
+              Sign Up
+            </Link>
+            <Link className="ui button" to="/products">
+              See Products
             </Link>
             <Link className="ui button" to="/cart">
               See Cart
             </Link>
-            <Button className="ui button" href="#" onClick={handleClick}>
-              Logout
-            </Button>
-          </div>
-        </Header>
-      ) : (
-        <Header>
-          {/* The navbar will show these links before you log in */}
-          <Link className="ui button" to="/login">
-            Login
-          </Link>
-          <Link className="ui button" to="/signup">
-            Sign Up
-          </Link>
-          <Link className="ui button" to="/products">
-            See Products
-          </Link>
-          <Link className="ui button" to="/cart">
-            See Cart
-          </Link>
-        </Header>
+          </Header>
+        </Grid.Column>
       )}
+      <Grid.Column>
+        <h1
+          as="h1"
+          textAlign="center"
+          style={{
+            'padding-top': '2%',
+            'font-family': 'Papyrus',
+            'font-size': '300%'
+          }}
+        >
+          YourWorld Industries
+        </h1>
+      </Grid.Column>
+      <Grid.Column />
     </Grid>
     <hr />
   </div>
