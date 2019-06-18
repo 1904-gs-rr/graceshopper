@@ -1,6 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
+import {Button, Form, Grid} from 'semantic-ui-react'
 import {auth} from '../store'
 
 /**
@@ -10,27 +11,31 @@ const AuthForm = props => {
   const {name, displayName, handleSubmit, error, cart} = props
 
   return (
-    <div>
-      <form onSubmit={() => handleSubmit(event, cart)} name={name}>
-        <div>
-          <label htmlFor="email">
-            <small>Email</small>
-          </label>
-          <input name="email" type="text" />
-        </div>
-        <div>
-          <label htmlFor="password">
-            <small>Password</small>
-          </label>
-          <input name="password" type="password" />
-        </div>
-        <div>
-          <button type="submit">{displayName}</button>
-        </div>
-        {error && error.response && <div> {error.response.data} </div>}
-      </form>
-      <a href="/auth/google">{displayName} with Google</a>
-    </div>
+
+    <Grid centered columns={3}>
+      <Grid.Column centered>
+        <Form onSubmit={handleSubmit} name={name}>
+          <Form.Field>
+            <label htmlFor="email">
+              <small>Email</small>
+            </label>
+            <input name="email" type="text" />
+          </Form.Field>
+          <Form.Field>
+            <label htmlFor="password">
+              <small>Password</small>
+            </label>
+            <input name="password" type="password" />
+          </Form.Field>
+          <Form.Field>
+            <Button type="submit">{displayName}</Button>
+            <a href="/auth/google">{displayName} with Google</a>
+          </Form.Field>
+          {error && error.response && <div> {error.response.data} </div>}
+        </Form>
+      </Grid.Column>
+    </Grid>
+
   )
 }
 
@@ -44,9 +49,10 @@ const AuthForm = props => {
 const mapLogin = state => {
   return {
     name: 'login',
-    displayName: 'Login',
-    error: state.user.error,
-    cart: state.cart
+
+    displayName: 'Log In',
+    error: state.user.error
+
   }
 }
 
