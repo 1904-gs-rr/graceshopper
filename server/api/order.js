@@ -169,3 +169,14 @@ router.put('/transferGuestCart', async (req, res, next) => {
     next(err)
   }
 })
+
+router.put('/addGuest', async (req, res, next) => {
+  try {
+    console.log('hi')
+    const product = await Product.findByPk(req.body.prod.id)
+    const newQuant = product.quantity - req.body.value
+    product.update({quantity: newQuant})
+  } catch (err) {
+    next(err)
+  }
+})

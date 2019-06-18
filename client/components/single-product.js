@@ -2,6 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import axios from 'axios'
 import {guestAdd, addingItem, getCart} from '../store/cart'
+import {addingGuestDB} from '../store/products'
 
 class SingleProduct extends React.Component {
   constructor() {
@@ -53,6 +54,8 @@ class SingleProduct extends React.Component {
     }
     let parsedCart = JSON.parse(localStorage.getItem('cart'))
     this.props.guestAdd(parsedCart)
+    console.log('between two calls')
+    this.props.addingGuestDB(event, value)
   }
   render() {
     const product = this.state.product
@@ -121,6 +124,9 @@ const mapDispatchToProps = dispatch => {
     },
     getCart: () => {
       return dispatch(getCart())
+    },
+    addingGuestDB: (item, value) => {
+      return dispatch(addingGuestDB(item, value))
     }
   }
 }

@@ -16,6 +16,7 @@ const defaultProducts = []
  * ACTION CREATORS
  */
 const gotProducts = products => ({type: GOT_PRODUCTS, products})
+
 export const editProduct = (product, quantity) => {
   return {
     type: EDIT_PRODUCT,
@@ -34,6 +35,17 @@ export const getProducts = () => {
       dispatch(gotProducts(data))
     } catch (err) {
       console.error(err)
+    }
+  }
+}
+
+export const addingGuestDB = (prod, value) => {
+  return async dispatch => {
+    try {
+      await axios.put('/api/cart/addGuest', {prod, value})
+      dispatch(getProducts())
+    } catch (err) {
+      console.log(err)
     }
   }
 }
