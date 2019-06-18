@@ -10,7 +10,7 @@ const EDIT_ITEM = 'EDIT_ITEM'
 const defaultCart = []
 
 const gotCart = cart => ({type: GOT_CART, cart})
-const addItem = item => ({type: ADD_ITEM, item})
+const addItem = (item, quantity) => ({type: ADD_ITEM, item, quantity})
 const editItem = (item, quantity) => ({type: EDIT_ITEM, item, quantity})
 export const guestAdd = cart => ({type: GUEST_ADD, cart})
 // export const transferGuestCart = cart => ({type: TRANSFER_GUEST_CART, cart})
@@ -45,7 +45,7 @@ export const addingItem = (item, quantity) => {
       } else {
         item.cartQuantity = quantity
       }
-      dispatch(addItem(item))
+      dispatch(addItem(item, quantity))
     } catch (err) {
       console.error(err)
     }
@@ -71,11 +71,16 @@ export default function(state = defaultCart, action) {
       let added = false
       state.forEach((item, idx) => {
         if (item.id === action.item.id) {
+          action.item.quantity = action.item.quantity - action.quantity
+          action.item.cartQuantity = action.item.cartQuantity + action.quantity
           state[idx] = action.item
           added = true
         }
       })
       if (!added) {
+        action.item.quantity = action.item.quantity - action.quantity
+        action.item.cartQuantity = action.item.cartQuantity + action.quantity
+
         let item = action.item
         return [...state, item]
       } else {

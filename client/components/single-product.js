@@ -2,7 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import axios from 'axios'
 import {guestAdd, addingItem, getCart} from '../store/cart'
-import {addingGuestDB} from '../store/products'
+import {addingGuestDB, getProducts} from '../store/products'
 
 class SingleProduct extends React.Component {
   constructor() {
@@ -33,12 +33,14 @@ class SingleProduct extends React.Component {
         for (let i = 0; i < cart.length; i++) {
           if (cart[i].id === event.id) {
             // if item is in cart
+            cart[i].quantity = cart[i].quantity - value
             cart[i].cartQuantity = +cart[i].cartQuantity + +value
             found = true
           }
         }
         if (!found) {
           event.cartQuantity = value
+          event.quantity = event.quantity - value
           cart.push(event)
         }
         found = false
@@ -54,8 +56,8 @@ class SingleProduct extends React.Component {
     }
     let parsedCart = JSON.parse(localStorage.getItem('cart'))
     this.props.guestAdd(parsedCart)
-    console.log('between two calls')
     this.props.addingGuestDB(event, value)
+    this.props.getProducts()
   }
   render() {
     const product = this.state.product
@@ -67,10 +69,9 @@ class SingleProduct extends React.Component {
         return product.name === item.name
       })
       if (cartItem) {
-        availableBeforeCheckout = +cartItem.quantity - +cartItem.cartQuantity
+        availableBeforeCheckout = cartItem.quantity
       }
     }
-
     let selectQuantity =
       availableBeforeCheckout !== undefined
         ? availableBeforeCheckout
@@ -127,6 +128,9 @@ const mapDispatchToProps = dispatch => {
     },
     addingGuestDB: (item, value) => {
       return dispatch(addingGuestDB(item, value))
+    },
+    getProducts: () => {
+      return dispatch(getProducts())
     }
   }
 }

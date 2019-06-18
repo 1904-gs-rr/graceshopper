@@ -43,7 +43,6 @@ export const addingGuestDB = (prod, value) => {
   return async dispatch => {
     try {
       await axios.put('/api/cart/addGuest', {prod, value})
-      dispatch(getProducts())
     } catch (err) {
       console.log(err)
     }

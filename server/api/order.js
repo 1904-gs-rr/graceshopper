@@ -155,15 +155,27 @@ router.put('/edit', async (req, res, next) => {
 router.put('/transferGuestCart', async (req, res, next) => {
   try {
     await req.body.forEach(async item => {
-      await CartProduct.create({
-        cartQuantity: item.cartQuantity,
-        orderId: req.session.cartId,
-        productId: item.id
+      const cartItem = await CartProduct.findOne({
+        where: {
+          orderId: req.session.cartId,
+          productId: item.id
+        }
       })
-      const product = await Product.findByPk(item.id)
-      const newQuant = product.dataValues.quantity - +item.cartQuantity
-      product.update({quantity: newQuant})
+      if (cartItem) {
+        let addedQuant = item.cartQuantity + cartItem.cartQuantity
+        cartItem.update({cartQuantity: addedQuant})
+      } else {
+        await CartProduct.create({
+          cartQuantity: item.cartQuantity,
+          orderId: req.session.cartId,
+          productId: item.id
+        })
+      }
     })
+    // })
+    // const product = await Product.findByPk(item.id)
+    // const newQuant = product.dataValues.quantity - +item.cartQuantity
+    // product.update({quantity: newQuant})
     res.send('success!')
   } catch (err) {
     next(err)
@@ -182,7 +194,6 @@ router.put('/addGuest', async (req, res, next) => {
 
 router.put('/guestEdit', async (req, res, next) => {
   try {
-    console.log('IN GUESTEDIT ROUTE')
     const product = await Product.findByPk(req.body.prod.id)
     const diff = req.body.prod.cartQuantity - req.body.value
     const newQuant = product.quantity + diff
