@@ -4,6 +4,7 @@ import axios from 'axios'
 import {Button, Grid} from 'semantic-ui-react'
 
 import {guestAdd, addingItem, getCart} from '../store/cart'
+import {addingGuestDB, getProducts} from '../store/products'
 
 class SingleProduct extends React.Component {
   constructor() {
@@ -34,12 +35,14 @@ class SingleProduct extends React.Component {
         for (let i = 0; i < cart.length; i++) {
           if (cart[i].id === event.id) {
             // if item is in cart
+            cart[i].quantity = cart[i].quantity - value
             cart[i].cartQuantity = +cart[i].cartQuantity + +value
             found = true
           }
         }
         if (!found) {
           event.cartQuantity = value
+          event.quantity = event.quantity - value
           cart.push(event)
         }
         found = false
@@ -55,6 +58,8 @@ class SingleProduct extends React.Component {
     }
     let parsedCart = JSON.parse(localStorage.getItem('cart'))
     this.props.guestAdd(parsedCart)
+    this.props.addingGuestDB(event, value)
+    this.props.getProducts()
   }
   render() {
     const product = this.state.product
@@ -66,10 +71,9 @@ class SingleProduct extends React.Component {
         return product.name === item.name
       })
       if (cartItem) {
-        availableBeforeCheckout = +cartItem.quantity - +cartItem.cartQuantity
+        availableBeforeCheckout = cartItem.quantity
       }
     }
-
     let selectQuantity =
       availableBeforeCheckout !== undefined
         ? availableBeforeCheckout
@@ -84,47 +88,24 @@ class SingleProduct extends React.Component {
       )
     }
     return (
-      <div
-        className="ui center aligned one column grid"
-        style={{'padding-top': '4%'}}
-      >
-        <div className="ui center aligned one column grid">
-          <div>
-            <h1 style={{display: 'flex', justifyContent: 'space-around'}}>
-              {product.name}
-            </h1>
-          </div>
-          <img src={product.imageUrl} />
-          <h2>In stock: {product.quantity}</h2>
-          <div>
-            <Button
-              size="large"
-              type="button"
-              onClick={
-                !this.props.user.id
-                  ? () =>
-                      this.addToCart(product, +this.refs.productQuantity.value)
-                  : () =>
-                      this.props.userAdd(
-                        product,
-                        +this.refs.productQuantity.value
-                      )
-              }
-            >
-              Add to cart
-            </Button>
-            <div className="ui compact menu">
-              <div>
-                <select
-                  className="ui item simple dropdown"
-                  ref="productQuantity"
-                >
-                  {options}
-                </select>
-              </div>
-            </div>
-          </div>
-        </div>
+
+      <div>
+        <h1>{product.name}</h1>
+        <img src={product.imageUrl} />
+        <h2>In stock: {selectQuantity}</h2>
+        <select ref="productQuantity">{options}</select>
+        <button
+          type="button"
+          onClick={
+            !this.props.user.id
+              ? () => this.addToCart(product, +this.refs.productQuantity.value)
+              : () =>
+                  this.props.userAdd(product, +this.refs.productQuantity.value)
+          }
+        >
+          Add to cart
+        </button>
+
       </div>
     )
   }
@@ -148,6 +129,12 @@ const mapDispatchToProps = dispatch => {
     },
     getCart: () => {
       return dispatch(getCart())
+    },
+    addingGuestDB: (item, value) => {
+      return dispatch(addingGuestDB(item, value))
+    },
+    getProducts: () => {
+      return dispatch(getProducts())
     }
   }
 }

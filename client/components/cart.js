@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-
+import {editProduct, getProducts, guestEdit} from '../store/products'
 import {getCart, guestAdd, addingItem, editingItem} from '../store/cart'
 
 import {NavLink, Redirect} from 'react-router-dom'
@@ -10,10 +10,14 @@ class Cart extends React.Component {
   constructor() {
     super()
   }
-  changeQuantity(prod, ref) {
+  changeQuantityGuest(prod, ref) {
     let cart = JSON.parse(localStorage.getItem('cart'))
     cart.forEach(el => {
       if (el.id === prod.id) {
+        let oldQuant = el.cartQuantity
+        let newQuant = ref
+        let diff = oldQuant - newQuant
+        el.quantity = el.quantity + diff
         el.cartQuantity = ref
       }
     })
@@ -22,6 +26,10 @@ class Cart extends React.Component {
     })
     localStorage.setItem('cart', JSON.stringify(newCart))
     this.props.guestAdd(newCart)
+    this.props.guestEdit(prod, ref)
+  }
+  changeQuantityUser(product, ref) {
+    this.props.userEdit(product, ref)
   }
 
   componentDidMount() {
@@ -44,47 +52,44 @@ class Cart extends React.Component {
 
   render() {
     return (
-      <div className="ui center aligned one column grid">
-        <h1 style={{'padding-top': '4%'}}>Products in Cart:</h1>
-        <div className="ui center aligned three column grid">
-          {this.props.cart
-            .filter(item => {
-              return item.cartQuantity !== 0
-            })
-            .map(product => {
-              let ref = `productQuantity${product.id}`
-              let options = []
-              let selectQuantity = product.quantity > 10 ? 10 : product.quantity
-              for (let i = 0; i <= selectQuantity; i++) {
-                options.push(
-                  <option key={i} value={i}>
-                    {i}
-                  </option>
-                )
-              }
-              return (
-                <div key={product.id}>
-                  <h3>{product.name}</h3>
-                  <img src={product.imageUrl} />
-                  <h3>Quantity: {product.cartQuantity} </h3>
-                  <select ref={ref}>{options}</select>
-                  <Button
-                    size="small"
-                    type="button"
-                    onClick={
-                      this.props.user.id
-                        ? () =>
-                            this.props.userEdit(product, +this.refs[ref].value)
-                        : () =>
-                            this.changeQuantity(product, +this.refs[ref].value)
-                    }
-                  >
-                    Change Quantity
-                  </Button>
-                </div>
-              )
-            })}
-        </div>
+
+      <div>
+        <h1>Products in Cart:</h1>
+        {this.props.cart.map(product => {
+          console.log('quantity', product.quantity)
+          console.log('cartquantity', product.cartQuantity)
+          let ref = `productQuantity${product.id}`
+          let options = []
+          let selectQuantity =
+            product.quantity > 10 ? 10 : product.quantity + product.cartQuantity
+          for (let i = 0; i <= selectQuantity; i++) {
+            options.push(
+              <option key={i} value={i}>
+                {i}
+              </option>
+            )
+          }
+          return (
+            <div key={product.id}>
+              <h3>{product.name}</h3>
+              <img src={product.imageUrl} />
+              <h3>Quantity: {product.cartQuantity} </h3>
+              <select ref={ref}>{options}</select>
+              <button
+                type="button"
+                onClick={
+                  this.props.user.id
+                    ? () =>
+                        this.changeQuantityUser(product, +this.refs[ref].value)
+                    : () =>
+                        this.changeQuantityGuest(product, +this.refs[ref].value)
+                }
+              >
+                Change Quantity
+              </button>
+            </div>
+          )
+        })}
 
         <NavLink to="/checkout">To Checkout</NavLink>
       </div>
@@ -110,6 +115,12 @@ const mapDispatchToProps = dispatch => {
     },
     userEdit: (item, quantity) => {
       return dispatch(editingItem(item, quantity))
+    },
+    getProducts: () => {
+      return dispatch(getProducts())
+    },
+    guestEdit: (prod, value) => {
+      return dispatch(guestEdit(prod, value))
     }
   }
 }

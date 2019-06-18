@@ -12,7 +12,6 @@ router.get('/', async (req, res, next) => {
   try {
     if (req.session.cartId) {
       const cart = await Order.findByPk(req.session.cartId)
-
       const products = await cart.getProducts()
       let cartQuantProducts = await products.map(async product => {
         const cartQuantItem = await CartProduct.findOne({
@@ -79,11 +78,18 @@ router.put('/add', async (req, res, next) => {
     const productFromCart = await CartProduct.findOrCreate({
       where: {orderId: req.session.cartId, productId: req.body.item.id}
     })
-
     // if (productFromCart) {
     await productFromCart[0].update({
       cartQuantity: +req.body.quantity + +productFromCart[0].cartQuantity
     })
+    const product = await Product.findOne({
+      where: {
+        id: productFromCart[0].productId
+      }
+    })
+
+    const newQuant = +product.quantity - +req.body.quantity
+    product.update({quantity: newQuant})
     res.send('success!')
     // } else {
     //   const cart = await Order.findByPk(req.session.cartId)
@@ -108,10 +114,20 @@ router.put('/edit', async (req, res, next) => {
     const productFromCart = await CartProduct.findOne({
       where: {orderId: req.session.cartId, productId: req.body.item.id}
     })
+    const oldCartQuantity = productFromCart.cartQuantity
     // if (productFromCart) {
     await productFromCart.update({
       cartQuantity: +req.body.quantity
     })
+
+    const product = await Product.findOne({
+      where: {
+        id: +productFromCart.productId
+      }
+    })
+    let diff = +oldCartQuantity - +productFromCart.cartQuantity
+    let newQuant = product.quantity + diff
+    product.update({quantity: +newQuant})
 
     if (productFromCart.cartQuantity === 0) {
       await productFromCart.destroy()
@@ -139,13 +155,49 @@ router.put('/edit', async (req, res, next) => {
 router.put('/transferGuestCart', async (req, res, next) => {
   try {
     await req.body.forEach(async item => {
-      await CartProduct.create({
-        cartQuantity: item.cartQuantity,
-        orderId: req.session.cartId,
-        productId: item.id
+      const cartItem = await CartProduct.findOne({
+        where: {
+          orderId: req.session.cartId,
+          productId: item.id
+        }
       })
+      if (cartItem) {
+        let addedQuant = item.cartQuantity + cartItem.cartQuantity
+        cartItem.update({cartQuantity: addedQuant})
+      } else {
+        await CartProduct.create({
+          cartQuantity: item.cartQuantity,
+          orderId: req.session.cartId,
+          productId: item.id
+        })
+      }
     })
+    // })
+    // const product = await Product.findByPk(item.id)
+    // const newQuant = product.dataValues.quantity - +item.cartQuantity
+    // product.update({quantity: newQuant})
     res.send('success!')
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.put('/addGuest', async (req, res, next) => {
+  try {
+    const product = await Product.findByPk(req.body.prod.id)
+    const newQuant = product.quantity - req.body.value
+    product.update({quantity: newQuant})
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.put('/guestEdit', async (req, res, next) => {
+  try {
+    const product = await Product.findByPk(req.body.prod.id)
+    const diff = req.body.prod.cartQuantity - req.body.value
+    const newQuant = product.quantity + diff
+    product.update({quantity: newQuant})
   } catch (err) {
     next(err)
   }
